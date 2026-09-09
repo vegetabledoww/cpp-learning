@@ -1,0 +1,123 @@
+// 题目描述：健康运动步数统计
+// 输入参数是一个四数据（均为int）的tuple的元组类型，其中第一个为useid、第二三分别为运动开始时间与结束时间，第四个为在该时间段内的平均速度
+// 1. 给定的vector<tuple<int,int,int,int>>中，可能会出现useid相同的情况，也可能会出现运动时间范围重叠的情况，当出现范围重叠，则取大的平均速度为真实速度
+// 2. 统计在连续120min内累计里程最大的userid，如果里程相同，则返回useid标号小的，如果二者都相同，则返回开始运动时间早的，返回的类型为tuple<int, int, int>，
+// 其中，三个参数分别为总步数、use_id、start_time。
+#include <bits/stdc++.h>
+using namespace std;
+class Solution {
+public:
+    tuple<int, int, int> MaxAmountOfExercise(const vector<tuple<int, int, int, int>>& records) {
+        // Step 1: 按 userid 分类
+        map<int, vector<pair<int, int>>> user_intervals;       // {start, end}
+        map<pair<int, int>, int> interval_speed;               // 区间 -> speed 映射
+        vector<int>v={1,2,3};
+        cout<<v.size()<<endl;
+        for (const auto& r : records) {
+            int uid = get<0>(r);
+            int start = get<1>(r);
+            int end = get<2>(r);
+            int speed = get<3>(r);
+
+            user_intervals[uid].push_back({start, end});
+            interval_speed[{start, end}] = speed;
+        }
+
+        map<int, vector<tuple<int, int, int>>> merged_user_data; // {start, end, speed}
+
+        // Step 2: 对每个用户进行区间合并 & 取最大速度
+        for (auto& [uid, intervals] : user_intervals) {
+            sort(intervals.begin(), intervals.end());
+            vector<tuple<int, int, int>> merged;
+            for (auto& iv : intervals) {
+                int cur_start = iv.first;
+                int cur_end = iv.second;
+                int cur_speed = interval_speed[iv];
+                if (!merged.empty() &&
+                    get<1>(merged.back()) >= cur_start) { // overlap or adjacent
+                    auto& last = merged.back();
+                    int max_speed = max(get<2>(last), cur_speed);
+                    get<1>(last) = max(get<1>(last), cur_end);
+                    get<2>(last) = max_speed;
+                } else {
+                    merged.emplace_back(cur_start, cur_end, cur_speed);
+                }
+            }
+            merged_user_data[uid] = merged;
+        }
+
+        // Step 3: 针对每个用户滑动窗口找最长距离的120分钟段
+        int max_distance = -1;
+        int best_uid = INT_MAX;
+        int best_start_time = INT_MAX;
+
+        for (auto& [uid, segs] : merged_user_data) {
+            for (auto& seg : segs) {
+                int s = get<0>(seg);
+                int e = get<1>(seg);
+                int v = get<2>(seg);
+
+                // 尝试从 s 到 e 中的所有长度为120的子区间
+                for (int t = s; t + 120 <= e; ++t) {
+                    int dist = 120 * v;
+                    if (dist > max_distance ||
+                        (dist == max_distance && uid < best_uid) ||
+                        (dist == max_distance && uid == best_uid && t < best_start_time)) {
+                        max_distance = dist;
+                        best_uid = uid;
+                        best_start_time = t;
+                    }
+                }
+            }
+        }
+
+        if (max_distance == -1)
+            return make_tuple(0, 0, 0); // 默认情况
+
+        return make_tuple(max_distance, best_uid, best_start_time);
+    }
+};
+
+int main() {
+    Solution solution;
+
+    // 测试案例1：基本测试
+    cout << "=== 测试案例1 ===" << endl;
+    vector<tuple<int, int, int, int>> records1 = {
+            {1, 0, 100, 5},    // 用户1，0-100分钟，速度5
+            {1, 50, 150, 8},   // 用户1，50-150分钟，速度8 (与上面重叠)
+            {2, 10, 130, 6}    // 用户2，10-130分钟，速度6
+    };
+
+    auto result1 = solution.MaxAmountOfExercise(records1);
+    cout << "结果: 总步数=" << get<0>(result1)
+         << ", 用户ID=" << get<1>(result1)
+         << ", 开始时间=" << get<2>(result1) << endl;
+
+    // 测试案例2：多个用户竞争
+    cout << "\n=== 测试案例2 ===" << endl;
+    vector<tuple<int, int, int, int>> records2 = {
+            {1, 0, 200, 3},    // 用户1，0-200分钟，速度3
+            {2, 50, 170, 4},   // 用户2，50-170分钟，速度4
+            {3, 100, 220, 5}   // 用户3，100-220分钟，速度5
+    };
+
+    auto result2 = solution.MaxAmountOfExercise(records2);
+    cout << "结果: 总步数=" << get<0>(result2)
+         << ", 用户ID=" << get<1>(result2)
+         << ", 开始时间=" << get<2>(result2) << endl;
+
+    // 测试案例3：相同距离，比较用户ID
+    cout << "\n=== 测试案例3 ===" << endl;
+    vector<tuple<int, int, int, int>> records3 = {
+            {3, 0, 150, 4},    // 用户3，0-150分钟，速度4
+            {1, 20, 140, 4}    // 用户1，20-140分钟，速度4 (相同距离，但用户ID更小)
+    };
+
+    auto result3 = solution.MaxAmountOfExercise(records3);
+    cout << "结果: 总步数=" << get<0>(result3)
+         << ", 用户ID=" << get<1>(result3)
+         << ", 开始时间=" << get<2>(result3) << endl;
+
+    return 0;
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "C++ 题目整理"
+  short_description: "将新 C++ 题目分类、补全题面样例、测试并纳入学习仓库"
+  default_prompt: "使用 $cpp-exercise-curator 将这道新 C++ 题目按学习仓库规范完善并验证。"

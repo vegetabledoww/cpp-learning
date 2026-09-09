@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/MinGW/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++", // 根据你的实际路径修改
+                "C:/MinGW/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32",
+                "C:/MinGW/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward",
+                "C:/MinGW/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include",
+                "C:/MinGW/mingw64/include",
+                "C:/MinGW/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "C:/MinGW/mingw64/bin/g++.exe", // 根据你的实际路径修改
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}

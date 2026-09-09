@@ -1,0 +1,20 @@
+# Compiler output
+/build/
+*.exe
+*.o
+*.obj
+*.out
+*.pdb
+*.ilk
+*.a
+*.dll
+
+# Archived generated/tool data
+/artifacts/legacy_exe/
+/artifacts/non_cpp/test_ssh.txt
+*.vsix
+*.db
+
+# Temporary files
+*.tmp
+*.log

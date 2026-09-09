@@ -43,7 +43,7 @@
 - `04_algorithms/bit_manipulation`：IPv4 地址转换、首部解析、CIDR 掩码、最长前缀匹配和十六进制异或校验和。
 - `04_algorithms/dynamic_programming`：编辑距离、打家劫舍、股票、零钱兑换等。
 - `04_algorithms/graph_and_bfs`：图搜索与迷宫搜索。
-- `04_algorithms/graph_and_dfs`：二维网格 DFS 与连通区域问题。
+- `04_algorithms/graph_and_dfs`：二维网格 DFS 与连通区域问题；LeetCode 200 练习岛屿计数，LeetCode 695 练习递归汇总岛屿面积。
 - `04_algorithms/backtracking`：数独回溯。
 - `04_algorithms/sliding_window`：可变长度滑动窗口、前缀和与连续子串问题。
 - `04_algorithms/string_parsing`：MAC 地址识别与规范化。

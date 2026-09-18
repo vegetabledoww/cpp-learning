@@ -19,6 +19,13 @@
 | 旧路径 | 新路径 |
 | --- | --- |
 | `04_algorithms/yuanyin.cpp` | `04_algorithms/sliding_window/longest_flawed_vowel_substring.cpp` |
+| `04_algorithms/0909.cpp`（后续重新创建的滑动窗口题） | `04_algorithms/sliding_window/max_nonzero_subarray_sum.cpp` |
+
+## 后续设计题归类
+
+| 旧路径 | 新路径 |
+| --- | --- |
+| `04_algorithms/0909.cpp`（原日志系统草稿） | `05_design_problems/log_system/solution.cpp` |
 
 ## 原 design 目录
 

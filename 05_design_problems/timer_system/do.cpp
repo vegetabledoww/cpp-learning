@@ -56,7 +56,6 @@ timerSystem.RunTimerSystem(8);
 #include <iostream>
 #include <utility>
 #include <vector>
-#include <map>
 #include <algorithm>
 #include <unordered_map>
 
@@ -68,17 +67,12 @@ private:
     // TODO：设计并添加需要维护的成员变量
 
 public:
-    map<int,int>per_times;//定时器ID-->周期
+    vector<int>per_times;//定时器ID连续，直接用下标查找周期
     int now_time = 0;
     unordered_map<int,int>table;//已启动的定时器ID-->上一次计时位置
     TimerSystem(const vector<int> &timers)
+        : per_times(timers)
     {
-        // TODO：初始化定时器系统
-        for (size_t i = 0; i < timers.size(); i++)
-        {
-            per_times[i] = timers[i];
-        }
-        
     }
 
     bool TimerStart(int timerId)
@@ -94,16 +88,15 @@ public:
 
     bool TimerStop(int timerId)
     {
-        // TODO：停止指定定时器
-        if(timerId >= 0 && timerId < static_cast<int>(per_times.size()))
+        // 先判断 timerId 是否合法。
+        if(timerId < 0 || timerId >= static_cast<int>(per_times.size()))
         {
-            if(table.find(timerId) != table.end())//证明查到了，确有这个定时器
-            {
-                table.erase(timerId);//将其在table中删除
-                return true;
-            }
+            return false;
         }
-        return false;
+
+        // 合法定时器即使尚未启动也算停止成功；erase 找不到键时不会报错。
+        table.erase(timerId);
+        return true;
     }
 
     vector<pair<int, int>> RunTimerSystem(int nowTime)
@@ -171,5 +164,13 @@ int main()
     }
     cout << '\n';
 
-    return 0;
+    // 边界测试：合法但未启动的定时器应返回 true，非法 ID 应返回 false。
+    TimerSystem timerSystem3({3});
+    bool stopBeforeStart = timerSystem3.TimerStop(0);
+    bool stopInvalidId = timerSystem3.TimerStop(1);
+    cout << "boundary test\n";
+    cout << "expected=1 0\n";
+    cout << "actual=" << stopBeforeStart << ' ' << stopInvalidId << '\n';
+
+    return (stopBeforeStart && !stopInvalidId) ? 0 : 1;
 }

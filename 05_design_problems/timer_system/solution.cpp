@@ -84,8 +84,8 @@ public:
             return false;
         }
 
-        active[timerId] = true;
-        nextTimeout[timerId] = currentTime + periods[timerId];
+        active[timerId] = true;//定时器启动
+        nextTimeout[timerId] = currentTime + periods[timerId];//下一次的超时时间
         return true;
     }
 
@@ -95,18 +95,16 @@ public:
         {
             return false;
         }
-
-        active[timerId] = false;
+        active[timerId] = false;//关闭定时器
         return true;
     }
 
     vector<pair<int,int>> RunTimerSystem(int nowTime)
     {
         vector<pair<int,int>>events;
-
         for (int timerId = 0; timerId < static_cast<int>(periods.size()); timerId++)
         {
-            if (!active[timerId])
+            if (!active[timerId])//定时器关闭了
             {
                 continue;
             }
@@ -120,7 +118,7 @@ public:
 
         //pair默认先比较first，再比较second，正好符合题目的排序规则
         sort(events.begin(), events.end());
-        currentTime = nowTime;
+        currentTime = nowTime;//推进系统时间
         return events;
     }
 };

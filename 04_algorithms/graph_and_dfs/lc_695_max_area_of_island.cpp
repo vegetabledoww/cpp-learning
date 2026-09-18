@@ -75,7 +75,7 @@ private:
         int rows = static_cast<int>(grid.size());
         int columns = static_cast<int>(grid[0].size());
 
-        // 越界或遇到水时，这个方向不能贡献面积。
+        // 越界或遇到水时，这个方向不能贡献面积
         if (row < 0 || row >= rows || column < 0 || column >= columns ||
             grid[row][column] == 0)
         {
@@ -84,7 +84,7 @@ private:
 
         // 当前陆地先计入面积，再沉降为水，避免被相邻格子重复统计。
         grid[row][column] = 0;
-
+        //需要+1的原因是只要有一个是1，则其面积为1
         return 1 + dfs(grid, row - 1, column)
                  + dfs(grid, row + 1, column)
                  + dfs(grid, row, column - 1)

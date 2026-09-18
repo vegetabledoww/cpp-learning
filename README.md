@@ -45,7 +45,7 @@
 - `04_algorithms/graph_and_bfs`：图搜索与迷宫搜索。
 - `04_algorithms/graph_and_dfs`：二维网格 DFS 与连通区域问题；LeetCode 200 练习岛屿计数，LeetCode 695 练习递归汇总岛屿面积。
 - `04_algorithms/backtracking`：数独回溯。
-- `04_algorithms/sliding_window`：可变长度滑动窗口、前缀和与连续子串问题。
+- `04_algorithms/sliding_window`：固定上限窗口、可变长度滑动窗口、前缀和与连续子串问题。
 - `04_algorithms/string_parsing`：MAC 地址识别与规范化。
 
 ### 设计题与案例
@@ -54,6 +54,8 @@
 - `05_design_problems/arp_system`：ARP 表、报文缓存和淘汰规则。
 - `05_design_problems/video_service`：视频频道分配、计费和释放后的资源迁移。
 - `05_design_problems/timer_system`：周期定时器的启动、停止和超时事件模拟。
+- `05_design_problems/log_system`：日志文件滚动、全局 FIFO 淘汰和多状态维护。
+- `05_design_problems/simple_file_system`：目录继承、独立根分支和子树级联删除。
 - `06_design_patterns/singleton`：单例模式示例。
 - `07_case_studies/health_exercise`：健康运动步数统计的多个实现及说明资料。
 - `07_case_studies/server_busy`：服务器空闲时段统计的分步实现与事件扫描优化版。

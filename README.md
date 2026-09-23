@@ -9,8 +9,8 @@
 | 目录 | 内容 |
 | --- | --- |
 | `01_cpp_basics` | C++ 语言基础、内存管理等示例 |
-| `02_stl` | STL 工具类、关联容器和容器适配器 |
-| `03_data_structures` | 链表、树、栈、单调栈和缓存结构 |
+| `02_stl` | 常用容器、迭代器、标准算法、字符串、数值工具和位集合 |
+| `03_data_structures` | 链表、树、栈、队列、单调栈、单调队列、并查集和缓存结构 |
 | `04_algorithms` | 排序、二分、动态规划、BFS、回溯、哈希等算法 |
 | `05_design_problems` | 给定类或函数接口，需要补写业务逻辑的设计题 |
 | `06_design_patterns` | 单例等经典设计模式 |
@@ -24,17 +24,32 @@
 
 ### STL
 
+- [STL 学习指南](./02_stl/README.md)：完整专题入口、容器选择、常见易错点与运行方法。
+- `02_stl/vector/vector_basics.cpp`：动态数组、二维数组、容量、拷贝与引用。
+- `02_stl/array/array_vector_comparison.cpp`：固定数组用法；[array 与 vector 详细对照](./02_stl/array/README.md)。
+- `02_stl/string/string_basics.cpp`：字符串查找、截取、修改与数字转换。
+- `02_stl/iterators`：迭代器、区间与安全删除。
+- `02_stl/algorithms`：常用算法、标准库二分、求和与前缀和等数值工具。
 - `02_stl/utility/pair_example.cpp`：`pair` 的创建、比较、排序和返回多个结果。
 - `02_stl/associative_containers/map_unordered_map_example.cpp`：`map` 与 `unordered_map`。
+- `02_stl/associative_containers`：另含 `set/unordered_set`、`multiset/multimap` 基础示例。
+- `02_stl/container_adapters/stack_basics.cpp`：栈的基本操作；队列与双端队列见 `03_data_structures/queue`。
 - `02_stl/priority_queue`：`priority_queue`、小根堆、自定义比较和 Top-K 问题。
+- `02_stl/list`：双向链表、排序去重和节点转移。
+- `02_stl/bitset`：固定长度位集合与位运算。
 
 ### 数据结构
 
 - `03_data_structures/linked_list`：链表合并与节点删除。
-- `03_data_structures/tree`：二叉树层序遍历。
+- `03_data_structures/tree`：二叉树前中后序、层序遍历，以及二叉搜索树插入与查找。
 - `03_data_structures/stack`：栈模拟题。
+- `03_data_structures/queue`：队列和双端队列基本操作、数组实现循环队列（LeetCode 622）。
 - `03_data_structures/monotonic_stack`：单调栈问题。
+- `03_data_structures/monotonic_queue`：单调队列维护滑动窗口最大值（LeetCode 239）。
+- `03_data_structures/union_find`：并查集、连通性查询、路径压缩与按大小合并。
 - `03_data_structures/cache`：LRU 缓存实现。
+
+基础数据结构的学习顺序、逐题说明和编译示例见 [数据结构学习指南](./03_data_structures/README.md)。
 
 ### 算法
 

@@ -1,0 +1,172 @@
+#include<stdio.h>
+#include<iostream>
+#include<vector>
+#include<set>
+#include<thread>
+#include<unordered_set>
+#include <forward_list>
+using namespace std;
+class B;
+class A
+{
+public:
+	~A(){
+		cout << "A::~A()" << endl;
+	}
+	weak_ptr<B>spb;
+};
+
+class B
+{
+public:
+	~B() {
+		cout << "B::~B()" << endl;
+	}
+	weak_ptr<A>spa;
+};
+
+int div()
+{
+	int a, b;
+	cin >> a >> b;
+	if (b == 0)   throw invalid_argument("除零错误");
+	else
+	{
+		return a / b;
+	}
+}
+
+void Func()
+{
+	//int* p1 = new int;
+	//int* p2 = new int;
+	cout << div() << endl;
+	//delete p1;
+	//delete p2;
+}
+//int main()
+//{
+//	shared_ptr<A>sp1 = make_shared<A>();//智能指针
+//	shared_ptr<B>sp2 = make_shared<B>();
+//	sp1->spb = sp2;
+//	sp2->spa = sp1;
+//	cout << sp1.use_count() << sp2.use_count()<<endl;
+//	return 0;
+//}
+//
+//int main()
+//{
+//	try
+//	{
+//		Func();
+//	}
+//	catch (exception& e)//异常执行catch,否则执行Func()
+//	{
+//		cout << e.what() << endl;
+//	}
+//	return 0;
+//}
+
+
+
+////单向链表
+//int main()
+//{
+//	std::forward_list<int> values{ 1,2,3 };
+//	values.emplace_front(4); // {4,1,2,3}
+//	values.emplace_after(values.before_begin(), 5); // {5,4,1,2,3}
+//	values.reverse(); // {3,2,1,4,5}
+//	//for (auto it = values.begin(); it != values.end(); ++it) {
+//	//	cout << *it << " ";
+//	//}
+//	for (auto it : values)
+//	{
+//		cout << it;
+//	}
+//	return 0;
+//}
+
+
+//int main()
+//{
+//	set<int>s;//set是顺序无重复的
+//	unordered_set<int>us;
+//	for (int i = 10; i > 0; i--)
+//	{
+//		us.insert(i);
+//	}
+//	us.insert(18);
+//	for (auto num : us)
+//	{
+//		cout <<num<<" ";
+//	}
+//}
+
+// pthread_create.c 
+
+
+// 子线程的处理代码
+
+void print();
+
+void print()
+{
+	cout << "-----------thread test-------------" << endl;
+}
+
+class test {
+public:
+	// operator()() - 重载运算符+参数传递
+	void operator()() {
+		cout << "class subthread starting!!!" << endl;
+		cout << "class subthread over!!!" << endl;
+	}
+	void operator()(int x, int y) {
+		cout << "x+y=" << x + y << endl;
+	}
+};
+
+int main()
+{
+	cout << "主线程id:" << this_thread::get_id() << endl;
+
+	// 线程休眠 - 不同的时间表示
+	std::this_thread::sleep_for(std::chrono::seconds(1));   //1秒 = 1000毫秒=10^6微秒
+	cout << "1s\n";
+#if 0
+	std::this_thread::sleep_for(std::chrono::microseconds(2 * 1000000));  //微秒
+	cout << "2s\n";
+	std::this_thread::sleep_for(std::chrono::milliseconds(3000));  //毫秒
+	cout << "3s\n";
+	std::this_thread::sleep_for(std::chrono::minutes(1));
+	cout << "1min\n";
+	std::this_thread::sleep_for(std::chrono::hours(1));
+	cout << "1hour\n";
+#endif
+
+	// 创建子线程
+	cout << "\n子线程1!!!" << endl;
+	thread v1(print);	//入口函数print
+	v1.join();	//加入主线程
+	// 是否可joinable()
+	if (v1.joinable()) {
+		cout << "可以调用join()或者detach()" << endl;
+	}
+	else {
+		cout << "不可以调用join()或者detach()" << endl;
+	}
+
+	cout << "\n子线程2!!!" << endl;
+	test v2;
+	thread t2(v2);
+	t2.join();
+
+	cout << "\n子线程3!!!" << endl;
+	test v3;
+	thread t3(v3, 2, 4);
+	t3.join();
+
+	return 0;
+}
+
+

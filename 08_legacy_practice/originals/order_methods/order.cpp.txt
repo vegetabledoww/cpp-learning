@@ -1,0 +1,147 @@
+#include <iostream>
+#include <stdio.h>
+#include <algorithm>
+#include <unordered_map>
+#include <vector>
+#include <queue>
+#include <cstring>
+#include <random>
+#include <numeric>
+#include<stdint.h>
+#include<cmath>
+using namespace std;
+//标准的冒泡排序
+void bubbleSort(vector<int>& nums) {
+	// 外循环：未排序区间为 [0, i]
+	for (int i = nums.size() - 1; i > 0; i--) {
+		// 内循环：将未排序区间 [0, i] 中的最大元素交换至该区间的最右端
+		for (int j = 0; j < i; j++) {
+			if (nums[j] > nums[j + 1]) {
+				// 交换 nums[j] 与 nums[j + 1]
+				// 这里使用了 std::swap() 函数
+				swap(nums[j], nums[j + 1]);
+			}
+		}
+	}
+}
+//优化后的冒泡排序
+void bubble(vector<int>& nums)
+{
+	int n = nums.size();
+	for (int i = n - 1; i > 0; i--)
+	{
+		bool flag = 0;
+		for (int j = 0; j < i; j++)
+		{
+			if (nums[j] > nums[j + 1])
+			{
+				swap(nums[j], nums[j + 1]);
+				flag = 1;
+			}
+		}
+		if (!flag)break;
+	}
+}
+
+//插入排序
+void insertion(vector<int>& nums)
+{
+	for (int i = 1; i < nums.size(); i++)
+	{
+		int base = nums[i], j = i - 1;//j为插入位置的下标
+		while (j >=0 && nums[j] > base)
+		{
+			nums[j + 1] = nums[j];
+			j--;
+		}
+		nums[j + 1] = base;
+	}
+}
+
+//快速排序
+/* 元素交换 */
+void swap(vector<int>& nums, int i, int j) {
+	int tmp = nums[i];
+	nums[i] = nums[j];
+	nums[j] = tmp;
+}
+/* 哨兵划分 */
+int partition(vector<int>& nums, int left, int right) {
+	// 以 nums[left] 为基准数
+	int i = left, j = right;
+	while (i < j) {
+		while (i < j && nums[j] >= nums[left])
+			j--; // 从右向左找首个小于基准数的元素
+		while (i < j && nums[i] <= nums[left])
+			i++; // 从左向右找首个大于基准数的元素
+		swap(nums, i, j); // 交换这两个元素
+	}
+	swap(nums, i, left); // 将基准数交换至两子数组的分界线
+	return i; // 返回基准数的索引
+}
+
+/* 快速排序(递归) */
+void quickSort(vector<int>& nums, int left, int right) {
+	// 子数组长度为 1 时终止递归
+	if (left >= right)
+		return;
+	// 哨兵划分
+	int pivot = partition(nums, left, right);
+	// 递归左子数组、右子数组
+	quickSort(nums, left, pivot - 1);
+	quickSort(nums, pivot + 1, right);
+}
+
+//heap order堆排序（小/大顶堆：优先队列）
+void heapSort(vector<int>& nums)
+{
+	priority_queue<int, vector<int>, greater<int>>pq;
+	for (int num : nums)
+	{
+		pq.push(num);
+	}
+	while (!pq.empty())
+	{
+		cout << pq.top() << " ";
+		pq.pop();
+	}
+}
+
+//桶排序
+void bucketSort(vector<float>& nums) {
+	// 初始化 k = n/2 个桶，预期向每个桶分配 2 个元素
+	int k = nums.size() / 2;
+	vector<vector<float>> buckets(k);
+	// 1. 平均分配桶的区间个数，将数组元素分配到各个桶中
+	for (float num : nums) {
+		// 输入数据范围为 [0, 1)，使用 num * k 映射到索引范围 [0, k-1]
+		int i = num * k;//整形截断，所以同一个桶中会出现差不多大小的几个元素
+		// 将 num 添加进桶 bucket_idx
+		buckets[i].push_back(num);
+	}
+//2.在桶的内部执行排序：采用内置函数
+	for (vector<float>& bucket : buckets) {
+		// 使用内置排序函数，也可以替换成其他排序算法
+		sort(bucket.begin(), bucket.end());
+	}
+	//3.遍历桶合并结果
+	int i = 0;
+	for (auto& bucket : buckets) {
+		for (auto & num : bucket) {
+			nums[i++] = num;
+		}
+	}
+}
+int main()
+{
+	vector<int>test = { 4,1,3,1,5,2 };
+	vector<float>test2 = { 0.2,0.5,0.001,0.52,0.99,0.999 };
+	//bubble(test);
+	//quickSort(test,0,test.size()-1);
+	//heapSort(test);
+	bucketSort(test2);
+	for (auto& num : test2)
+		cout << num << " ";
+	return 0;
+}
+

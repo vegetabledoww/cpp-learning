@@ -1,0 +1,315 @@
+﻿// huawei.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+//
+//
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <unordered_set>
+using namespace std;
+//
+//struct Box
+//{
+//    int length, width, height;
+//};
+//
+//bool cmp(const Box& a, const Box& b)
+//{
+//    if (a.length != b.length
+//        {
+//            return a.length > b.length;
+//        }
+//    return a.width > b.width;
+//}
+//int main()
+//{
+//    int N;
+//        cin >> N;
+//        vector<Box>boxes(N);
+//
+//        for (int i = 0; i < N; i++)
+//        {
+//            cin >> boxes[i].length >> boxes[i].width >> boxes[i].height;
+//        }
+//
+//    sort(boxes.begin(), boxes.end(), cmp);
+//
+//    vector<int>dp(N);
+//    int maxHeight = 0;
+//
+//    for (int i = 0; i < N; i++)
+//    {
+//        dp[i] = boxes[i].height;
+//        for (int j = 0; j < i; j++)
+//        {
+//            if (boxes[j].length > boxes[i].length && boxes[j].width > boxes[i].width)
+//            {
+//                dp[i] = max(dp[i], dp[j] + boxes[i].height);
+//            }
+//        }
+//        maxHeight = max(maxHeight, dp[i]);
+//    }
+//    cout << maxHeight << endl;
+//    return 0;
+//}
+
+
+
+
+//struct Business
+//{
+//    int start, end, profit;
+//};
+//
+//bool compare(const Business & a, const Business & b)
+//{
+//    return a.end < b.end;
+//}
+//
+//int findPreviousBusiness(const vector<Business>&businesses, int index)
+//{
+//    int low = 0, 
+//    int high = index - 1;
+//    while (low <= high)
+//    {
+//        int mid = low + (high - low) / 2;
+//        if (businesses[mid].end < businesses[index].start)
+//        {
+//            if (businesses[mid + 1].end < businesses[index].start)
+//            {
+//                low = mid + 1;
+//            }
+//            else
+//            {
+//                return mid;
+//            }
+//        }
+//        else
+//        {
+//            high = mid - 1;
+//        }
+//    }
+//    return -1;
+//}
+//
+//int maxProfit(int N, const vector<Business>& businesses)
+//{
+//    int M = businesses.size();
+//
+//    vector<int>dp(M, 0);
+//    vector<Business>sortedBusinesses = businesses;
+//    sort(sortedBusinesses.begin(), sortedBusinesses.end(), compare);
+//    dp[0] = sortedBusinesses[0].profit;
+//    for (size_t i = 1; i < M; i++)
+//    {
+//        int includeProfit = sortedBusinesses[i].profit;
+//        int prev = findPreviousBusiness(sortedBusinesses, i);
+//        if (prev != -1)
+//        {
+//            includeProfit += dp[prev];
+//        }
+//
+//        int excludeProfit = dp[i - 1];
+//        dp[i] = max(includeProfit, excludeProfit);
+//    }
+//    return dp[M - 1];
+//}
+//
+//int main()
+//{
+//    int N = 0, M = 0;
+//    cin >> N >> M;
+//    vector<Business>businesses(M);
+//    for (size_t i = 0; i < M; i++)
+//    {
+//        cin >> businesses[i].start >> businesses[i].end >> businesses[i].profit;
+//    }
+//
+//    int result = maxProfit(N, businesses);
+//    cout << result << endl;
+//    return 0;
+//}
+
+
+
+//
+////第二题
+//struct Box
+//{
+//    int length, width, height;
+//    bool operator<(const Box& b)const
+//    {
+//        if (length != b.length)
+//        {
+//            return length < b.length;
+//        }
+//        return width < b.width;
+//    }
+//};
+//
+//bool canPlaceOn(const Box& a, const Box& b)
+//{
+//    return a.length < b.length && a.width < b.width && a.height<b.height;
+//}
+//int main()
+//{
+//    int N = 0;
+//    cin >> N;
+//    vector<Box>boxes(N);
+//
+//    for (int i = 0; i < N; i++)
+//    {
+//        cin >> boxes[i].length >> boxes[i].width >> boxes[i].height;
+//    }
+//    sort(boxes.begin(), boxes.end());
+//
+//    vector<int>dp(N);
+//    for (int i = 0; i < N; i++)
+//    {
+//        dp[i] = boxes[i].height;
+//    }
+//    int maxHeight = 0;
+//    for (int i = 0; i < N; i++)
+//    {
+//        for (int j = 0; j < i; j++)
+//        {
+//            if (canPlaceOn(boxes[j], boxes[i]))
+//            {
+//                dp[i] = max(dp[i], dp[j] + boxes[i].height);
+//            }
+//        }
+//        maxHeight = max(maxHeight, dp[i]);
+//    }
+//
+//    cout << maxHeight << endl;
+//    return 0;
+//}
+
+//天翼云
+
+
+
+//// 寻找最大重量的等比数列函数
+//#include <iostream>
+//#include <cmath>
+//
+//// 计算等比数列和
+//long long sumOfGeometricSeries(int firstTerm, int commonRatio, int numTerms) {
+//    if (commonRatio == 1) {
+//        return firstTerm * numTerms;
+//    }
+//    return firstTerm * (1 - static_cast<long long>(std::pow(commonRatio, numTerms))) / (1 - commonRatio);
+//}
+
+//// 寻找最大重量的等比数列函数
+//void findMaxWeightGeometricSeries(int n, int& maxWeight, int& optimalQ) {
+//    maxWeight = 0;
+//    optimalQ = 0;
+//    int sqrtN = std::sqrt(n);
+//    for (int q = 2; q <= sqrtN; ++q) {
+//        int weight = 0;
+//        long long sum = 1;
+//        while (sum <= n) {
+//            if (sum == n) {
+//                if (weight + 1 > maxWeight) {
+//                    maxWeight = weight + 1;
+//                    optimalQ = q;
+//                }
+//                break;
+//            }
+//            sum *= q;
+//            weight++;
+//        }
+//    }
+//    for (int q = sqrtN; q < n; ++q) {
+//        int weight = 0;
+//        while (true) {
+//            long long sum = sumOfGeometricSeries(1, q, weight + 1);
+//            if (sum > n) {
+//                break;
+//            }
+//            if (sum == n) {
+//                if (weight + 1 > maxWeight) {
+//                    maxWeight = weight + 1;
+//                    optimalQ = q;
+//                }
+//                break;
+//            }
+//            weight++;
+//        }
+//    }
+////}
+//
+//int main() {
+//    int n=0,num=0;
+//    cin >> n;
+//    vector<int>src;
+//    for (size_t i = 0; i < n; i++)
+//    {
+//        cin >> num;
+//        src.push_back(num);
+//
+//    }
+//    int maxWeight, optimalQ;
+//    for (int i = 0; i < n; i++)
+//    {
+//        findMaxWeightGeometricSeries(src[i], maxWeight, optimalQ);
+//        std::cout << maxWeight << optimalQ << std::endl;
+//    }
+//    return 0;
+//}
+
+    struct LinkNode {
+        char value;
+        LinkNode* next;
+        LinkNode(char c) :value(c), next(nullptr) {}
+    };
+
+    LinkNode* creatlinknode(const string & str)
+    {
+        if (str.empty())return nullptr;
+        LinkNode* head = new LinkNode(str[0]);
+        LinkNode* cur = head;
+        //串起来
+        for (size_t i = 0; i < str.length(); i++)
+        {
+            cur->next = new LinkNode(str[i]);
+            cur = cur->next;
+        }
+        return head;
+    }
+
+    char findfirstnode(LinkNode * head1, const string & str2)
+    {
+        unordered_set<char>charSet(str2.begin(), str2.end());
+        LinkNode* cur = head1;
+        while (cur)
+        {
+            if (charSet.find(cur->value) == charSet.end())//当前字符不在str2中
+            {
+                return cur->value;//将此值返回
+            }
+            cur = cur->next;
+        }
+        return '\0';//如果没有找到，返回空字符
+    }
+
+    int main()
+    {
+        string str1, str2;
+        cin >> str1 >> str2;
+        LinkNode* head1 = creatlinknode(str1);
+        char result = findfirstnode(head1, str2);
+        if (result != '\0')
+            cout << result;
+        return 0;
+
+    }
+
+
+
+
+
+
+
+
+

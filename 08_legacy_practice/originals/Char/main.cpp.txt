@@ -1,0 +1,350 @@
+﻿#include <iostream>
+#include<stdio.h>
+#include <algorithm>
+#include <unordered_map>
+#include <vector>
+#include <cstring>
+#include <random>
+#include <numeric>
+#include<stdint.h>
+#include<cmath>
+#include<map>
+using namespace std;
+#define PI 3.14159265358
+//字符数组整体赋值
+//const int SIZE = 5;  // 数组的大小
+//
+//int main() {
+//    int arr1[SIZE] = { 1, 2, 3, 4, 5 };  // 原始数组
+//    int arr2[SIZE];  // 目标数组
+//     //使用 std::copy 进行整体赋值
+//    std::copy(arr1, arr1 + SIZE, arr2);
+//     //打印arr2的值
+//    for (int i = 0; i < SIZE; ++i) {
+//        std::cout << arr2[i] << " ";
+//    }
+//    std::cout << std::endl;
+//
+//    return 0;
+//}
+// 
+// 烫烫烫烫
+// int main()
+//{
+//		char test[10];
+//		char tran[10];
+//		test[0] = 'a';
+//		tran = test;
+//		for (int i = 0; i < 10; i++)
+//		{
+//			std::cout << test[i];
+//		}
+//}
+// 
+// 
+//分批函数
+
+int nums(vector<int>&data)
+{
+    int num = 1;
+    //data = { 1,1,2,6,3,100 };//4
+    sort(data.begin(), data.end());
+    for (int i = 0; i < data.size()-1; i++)
+    {
+        if (data[i] == data[i + 1])
+        {
+            continue;
+        }
+        else
+        {
+            num++;
+        }
+    }
+    return num;
+}
+
+
+////高斯分布
+//int main()
+//{
+//	random_device rd;
+//	mt19937 gen(rd());
+//	vector<double>ans1;
+//	vector<double>ans2;
+//	vector<double>ans3;
+//	vector<vector<double>>ans;// (3, vector<double>());
+//	for (int i = 0; i < 10; i++)
+//	{
+//		normal_distribution<double>distribution1(0, 1.0);
+//		normal_distribution<double>distribution2(0, 5.0);
+//		normal_distribution<double>distribution3(0, 10.0);
+//		double rnd1 = distribution1(gen);//随机数生成种子
+//		double rnd2 = distribution2(gen);//随机数生成种子
+//		double rnd3 = distribution3(gen);//随机数生成种子
+//		ans1.push_back(rnd1);
+//		ans2.push_back(rnd2);
+//		ans3.push_back(rnd3);
+//		//cout << ans[i] << endl;
+//		//system("pause");
+//	}
+//	ans.push_back(ans1);
+//	ans.push_back(ans2);
+//	ans.push_back(ans3);
+//	return 0;
+//}
+
+// 字符串拷贝函数  strcpy_s
+//int main()
+//{
+//	char a[10] = {'0','0'};
+//	char b[10];
+//	strcpy_s(b,a);
+//	/*for (int i = 0; i < 10; i++)
+//		cout << b[i];*/
+//	cout << a<<endl;
+//	cout << b;
+//}
+
+//memcpy函数
+//int main()
+//{
+//    char str1[3];
+//    char str2[3];
+//    cout << "Please enter str2: ";
+//    cin.get(str2, 3);
+//    memcpy(str1,str2,3);//复制str2的前两个字符给str1，因为字符类型最后一个都是/0，占一个字节
+//    cout << "str1 is " << "\" " << str1 << "\".\n";
+//    system("pause");
+//    return 0;
+//}
+////最大最小值函数
+//int main()
+//{
+//	vector<float>sum = {0,6,5,7,9,10};
+//	float total = accumulate(sum.begin()+1, sum.end(), 0.0);
+//	int max = *max_element(sum.begin(), sum.end());
+//	int min = *min_element(sum.begin()+1, sum.end());
+//	cout << total / (sum.size() - 1) << endl;
+//	cout << max << endl;
+//	cout << min << endl;
+//	system("pause");
+//}
+
+//memcpy以及memset函数
+//int main()
+//{
+//	int arr1[] = {5,6,7,8,2};
+//	int arr2[] = { 1 ,100,12,45};
+//	memcpy(arr1, arr2, sizeof(arr2));
+//	//memset(arr1, 0, sizeof(arr1));//此函数第二个参数只能是0或者-1，一般用于初始化操作
+//	int mm = sizeof(arr1);
+//	int nn = sizeof(arr2);
+//	for(auto &num:arr1)
+//	cout << num<<'\t';
+//	return 0;
+//}
+
+//枚举类型
+//enum week :int32_t   //字符类型
+//{
+//	周一,
+//	周二,
+//	周三,
+//	周四,
+//	周五,
+//	周六,
+//	周天
+//};
+//int main()
+//{
+//	week today = 周天;
+//	cout << today;
+//	return 0;
+//}
+//int main()
+//{
+//	cout << sin(PI /6);
+//	return 0;
+//}
+
+////协方差矩阵的计算
+//
+//void transpose(vector<vector<int>>&A, vector<vector<int>>& B)
+//{
+//	for (int i = 0; i < 3; i++)
+//	{
+//		for (int j = 0; j < 3; j++)
+//		{
+//			B[j][i] = A[i][j];
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//    int rowa = 3;//第一个矩阵的行数
+//    int colb = 3;//第二个矩阵的列数
+//    int cola = 3;//第一个矩阵的列数 等价 第二个矩阵的行数
+//	vector<vector<int>>ans= {
+//		{1,2,3},
+//		{4,5,6},
+//		{7,8,9}
+//	};
+//	vector<vector<int>>B(rowa, vector<int>(colb, 0));
+//	transpose(ans, B);
+//    vector<vector<int>> ret(rowa, vector<int>(colb, 0));//保存结果的矩阵
+//        //模拟进行矩阵a*矩阵b的运算
+//        for (int i = 0; i < rowa; i++) {
+//            for (int j = 0; j < colb; j++) {
+//                int sum = 0;    //存储a矩阵低i行和b矩阵第j列 第k轮 的相乘累加和
+//                for (int k = 0; k < cola; k++) {
+//                    sum += ans[i][k] * B[k][j];
+//                }
+//                ret[i][j] = sum;
+//            }
+//
+//        }
+//        //打印结果矩阵(模拟观察到，结果矩阵的行数也就是a矩阵的行数，结果矩阵的列数也就是b矩阵的列数)
+//        for (int i = 0; i < rowa; i++) {
+//            for (int j = 0; j < colb; j++) {
+//                cout << ret[i][j] << " ";
+//            }
+//            cout << endl;
+//        }
+//        return 0;
+//}
+
+//确定频率
+// enum Freq : int32_t
+// {
+//     频率不变,
+//     参差重频,
+//     线性调频,
+//     捷变频
+// };
+//输入参数为数组，输出为数组的差（比原数组size少1）,每调用一次此函数，对应数组大小减一
+//vector<int>decline(vector<int>& source)
+//{
+//    vector<int>ans;
+//    for (int i = 1; i < source.size(); i++)
+//    {
+//        ans.push_back(source[i] - source[i - 1]);
+//    }
+//    return ans;
+//}
+//
+//int main(int argc, char const* argv[])
+//{
+//    vector<int>source_FM(10);
+//    vector<int>source_constance(10);
+//    vector<int>ret_first;
+//    vector<int>ret_second;
+//    vector<int>source_agile;
+//    source_FM = { 1000,1100,1200,1300,1400,1500,1600,1700,1800,1900 };//线性调频信号
+//    source_constance = { 1000,1000,1000,1000,1000,1000,1000,1000,1000,1000 };//恒定频率信号 
+//    source_agile = { 1000,5000,4000,4100,3200,2222,1234,587,0,123 };//频率捷变信号
+//    ret_first = decline(source_FM);//第一次做差
+//    ret_second = decline(ret_first);  //第二次做差
+//    for (int i = 0; i < source_FM.size()-2; i++)
+//    {
+//        if (ret_first[i] == 0)
+//        {
+//            cout << "频率不变信号" << endl;
+//        }
+//        else if (ret_second[i] == 0)
+//        {
+//            cout << "重频参差信号" << endl;
+//        }
+//        else
+//        {
+//            cout << "频率捷变信号" << endl;
+//        }
+//
+//        //system("pause");
+//    }
+//    return 0;
+//}
+////批号函数
+//int PH(vector<int>&temp)
+//{
+//	int num = 1;
+//	sort(temp.begin(), temp.end());
+//	for (int i = 0; i < temp.size()-1; i++)
+//	{
+//		if (temp[i] != temp[i + 1])
+//		{
+//			num++;
+//		}
+//	}
+//	return num;
+//}
+////1 3 3 4 5
+//int main()
+//{
+//	vector<int>input_message = {3,3,4,1,5,3};//原始数据
+//	unordered_map<int, int>mp;
+//	for (int i = 0; i < input_message.size(); i++)
+//	{
+//		//mp[input_message[i]]=0;
+//		mp[input_message[i]] = PH(input_message);
+//	}
+//	return 0;
+//}
+
+//统计数组中元素出现个数
+//int main() {
+//    std::vector<int> data = { 3, 3, 4, 1, 5, 3 };
+//    // 定义一个计数器，用于统计每个 ID 出现的次数
+//    unordered_map<int, int> count;
+//    for (int id : data) {
+//        // 增加 ID 的计数
+//        count[id]++;
+//    }
+//    for (const auto& pair : count) {
+//        int id = pair.first;
+//        int count = pair.second;
+//        std::cout << "ID " << id << " 出现了 " << count << " 次" << std::endl;
+//    }
+//    return 0;
+//}
+
+//联合体+结构体应用
+//#define FEMALE 0
+//#define MALE   1
+//
+//typedef union {
+//	char info[11];
+//	struct {
+//		char name[10];
+//		unsigned char age : 7;//分配位
+//		unsigned char gender : 1;//分配位
+//	};
+//}StudentType;
+//
+//int main()
+//{
+//	StudentType s1;
+//	char new_info[11] = { 'l','i','s','i',0,0,0,0,0,0,146};//age最大表示到127
+//	memcpy(s1.info, new_info, sizeof(new_info));
+//	printf("name:%s age:%d gender:%d\n", s1.name, s1.age, s1.gender);//C语言写法
+//	//C++:C++中的位域操作可能需要一些额外的处理，因为 C++没有直接支持位域,static_cast<int>将位域值转换为整数进行输出
+//	cout << "name:" << s1.name << " age:" << static_cast<int>(s1.age) << " gender:" << static_cast<int>(s1.gender) << endl;
+//}
+
+
+//int main()
+//{
+//	string str = "ABAxs";
+//	char str2 = 'b';
+//	char str3 = toupper(str2);
+//	for (auto& ch : str)
+//	{
+//		ch = tolower(ch);
+//		cout << ch;
+//	}
+//	cout << str3;
+//	return 0;
+//}
+
+
+

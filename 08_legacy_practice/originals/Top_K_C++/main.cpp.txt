@@ -1,0 +1,31 @@
+#include "assist.h"
+int maxSubArray(vector<int>& nums);
+int calPoints(vector<string>& operations);
+int lengthOfLIS(vector<int>& nums);
+//int main()
+//{
+//	//ListNode* head = nullptr;
+//	//head = new ListNode(0);
+//	//head->next = new ListNode(1);
+//	//head->next->next = new ListNode(2);
+//	//head->next->next->next = new ListNode(3);
+//	//ListNode* ans = nullptr;
+//	//ans = reverseList_rec(head);
+//	//while (ans)
+//	//{
+//	//	cout << ans->val<<" ";
+//	//	ans = ans->next;
+//	//}
+//	//quickSort_not_recursion(test, 0, test.size() - 1);
+//	/*print_nums(test);*/
+//	/*vector<int>test = { 10,9,2,5,3,7,101,18};
+//	cout << lengthOfLIS(test);*/
+//	//print_nums(test);
+//	//string str = "10";
+//	//int res = minimumOperations(str);
+//	//cout << res;
+//	//vector<string>ops = {"5", "2", "C", "D", "+"};
+//	//cout << calPoints(ops);
+//	int a = 5 ^ 2;//°´Î»Òì»ò
+//	cout << a;
+//}

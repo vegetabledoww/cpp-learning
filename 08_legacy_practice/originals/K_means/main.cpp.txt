@@ -1,0 +1,127 @@
+#include <vector>
+#include <cmath>
+#include <iostream>
+
+struct Point {
+    double x;
+    double y;
+    double z;
+};
+
+struct Cluster {
+    Point center;
+    std::vector<Point> points;
+};
+
+/**
+ * 计算两个点之间的距离
+ *
+ * @param p1 第一个点
+ * @param p2 第二个点
+ * @return 两点之间的距离
+ */
+double Distance(const Point& p1, const Point& p2) {
+    return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2)+pow(p1.z-p2.z,2));
+}
+
+/**
+ * 更新簇中心的位置
+ *
+ * @param points 属于该簇的点集合
+ * @param cluster 要更新的簇
+ * @return 簇内所有点到簇中心的总距离
+ */
+double UpdateClusterCenter(const std::vector<Point>& points, Cluster& cluster) {
+    double sum_x = 0.0, sum_y = 0.0,sum_z=0.0;
+    for (const auto& point : points) {
+        sum_x += point.x;
+        sum_y += point.y;
+        sum_z += point.z;
+    }
+    cluster.center.x = sum_x / points.size();// 均值
+    cluster.center.y = sum_y / points.size();
+    cluster.center.z = sum_z / points.size();
+    double total_distance = 0.0;
+    for (const auto& point : points) {
+        total_distance += Distance(point, cluster.center);
+    }
+    return total_distance;
+}
+
+/**
+ * 执行 K 均值聚类算法
+ *
+ * @param data 数据点集合
+ * @param k 簇的数量
+ * @param clusters 存储簇的容器
+ */
+void KMeans(const std::vector<Point>& data, int k, std::vector<Cluster>& clusters) {
+    // 检查输入的合法性
+    if (data.empty() || k <= 0) {
+        std::cerr << "错误，必须输入簇数量！" << std::endl;
+        return;
+    }
+    // 初始化 k 个随机簇中心
+    std::vector<Point> initial_cluster_centers;
+    for (int i = 0; i < k; ++i) {
+        initial_cluster_centers.push_back(data[i]);
+    }
+    // 初始化随机簇
+    for (int i = 0; i < k; ++i) {
+        Cluster cluster;
+        cluster.points.clear();
+        cluster.center = initial_cluster_centers[i];
+        clusters.push_back(cluster);
+    }
+
+    // 计算距离
+    for (const auto& point : data) {
+        double min_distance = std::numeric_limits<double>::max();
+        int cluster_index = 0;
+        for (int i = 0; i < k; ++i) {
+            double distance = Distance(point, clusters[i].center);
+            if (distance < min_distance) {
+                min_distance = distance;
+                cluster_index = i;
+            }
+        }
+        clusters[cluster_index].points.push_back(point);
+    }
+
+    // 更新簇心
+    double total_distance = 0.0;
+    do {
+        total_distance = 0.0;
+        for (auto& cluster : clusters) {
+            total_distance += UpdateClusterCenter(cluster.points, cluster);
+            cluster.points.clear(); // Reset point assignments
+        }
+        // 更新点到簇心的距离
+        for (const auto& point : data) {
+            double min_distance = std::numeric_limits<double>::max();
+            int cluster_index = 0;
+            for (int i = 0; i < k; ++i) {
+                double distance = Distance(point, clusters[i].center);
+                if (distance < min_distance) {
+                    min_distance = distance;
+                    cluster_index = i;
+                }
+            }
+            clusters[cluster_index].points.push_back(point);
+        }
+    } while (total_distance > 20); // Convergence criteria
+}
+
+int main() {
+    std::vector<Point> data = { {1.0, 2.0,0.9}, {1.5, 1.8,0.9}, {5.0, 8.0,6.0}, {8.0, 8.0,6.0}, {1.5, 1.8,6.0}, {5.0, 8.0,6.0}, {7.0, 7.0,6.0} };
+    std::vector<Cluster> clusters;
+    int k = 2; // Number of clusters
+    KMeans(data, k, clusters);
+    for (const auto& cluster : clusters) {
+        std::cout << "簇心: (" << cluster.center.x << ", " << cluster.center.y << ", "<<cluster.center.z<<")" << std::endl;
+        for (const auto& point : cluster.points) {
+            std::cout << "(" << point.x << ", " << point.y << ", "<<point.z<<")" << std::endl;
+        }
+    }
+    return 0;
+}

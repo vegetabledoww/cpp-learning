@@ -1,0 +1,100 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+const int MAXN = 1005;
+const int MAXCOLOR = 1005;
+
+int n;
+int color[MAXN];
+vector<int>tree[MAXN];
+int parent[MAXN];
+bool visited[MAXN];
+int max_xor = 0;
+
+void build_parent(int u, int p)
+{
+	parent[u] = p;
+	for (int v : tree[u])
+	{
+		if (v != p)
+		{
+			build_parent(v, u);
+		}
+	}
+}
+
+void dfs(int u, vector<int>& colors, int& total_xor, int counts[])
+{
+	visited[u] = true;
+	colors.push_back(colors[u]);
+	counts[color[u]]++;
+	total_xor ^= color[u];
+	for (int v : tree[u])
+	{
+		if (!visited[v])
+		{
+			dfs(v, colors, total_xor, counts);
+		}
+	}
+}
+
+int main()
+{
+	cin >> n;
+	for (int i = 1; i < n; i++)
+	{
+		int u, v;
+		cin >> u >> v;
+		tree[u].push_back(v);
+		tree[v].push_back(u);
+	}
+	build_parent(1, 0);
+	for (int root = 1; root <= n; root++)
+	{
+		vector<int>colors;
+		int total_xor = 0;
+		int counts[MAXCOLOR];
+		memset(counts, 0, sizeof(counts));
+		memset(visited, 0, sizeof(visited));
+
+		if (parent[root] != 0)
+		{
+			visited[parent[root]] = true;
+		}
+		dfs(root, colors, total_xor, counts);
+		if (parent[root] != 0)
+		{
+			visited[parent[root]] = false;
+		}
+		int max_freq = 0;
+		for (int c = 1; c <= 1000; c++)
+		{
+			if (counts[c] > max_freq)
+			{
+				max_freq = counts[c];
+			}
+		}
+		int xor_removed = 0;
+		for (int c = 1; c < 1000; c++)
+		{
+			if (counts[c] == max_freq)
+			{
+				if (counts[c] % 2 == 1)
+				{
+					xor_removed ^= c;
+				}
+			}
+		}
+		int xor_after_removal = total_xor ^ xor_removed;
+
+		if (xor_after_removal > max_xor)
+		{
+			max_xor = xor_after_removal;
+		}
+	}
+	cout << max_xor << endl;
+	return 0;
+}

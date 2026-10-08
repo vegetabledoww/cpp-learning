@@ -1,0 +1,163 @@
+{
+  "date": "2026-09-28",
+  "sourceRoot": "D:\\Code\\source\\repos",
+  "note": "Byte-identical source copies; original encodings retained; .txt suffix prevents accidental compilation. TinyWebServer excluded as a whole project.",
+  "files": [
+    {
+      "source": "Char/main.cpp",
+      "archive": "originals/Char/main.cpp.txt",
+      "bytes": 8868,
+      "sha256": "9C437BD9A2FA3222DC7398A81A87F756033DA54E0CF1387D7FCAB096F0190801"
+    },
+    {
+      "source": "cov_Matrix/main.cpp",
+      "archive": "originals/cov_Matrix/main.cpp.txt",
+      "bytes": 773,
+      "sha256": "1C3CA701DF8E268AB8154B3F62B030C8B180246F21D0E647A99CA31A2CBB08EA"
+    },
+    {
+      "source": "K_means/main.cpp",
+      "archive": "originals/K_means/main.cpp.txt",
+      "bytes": 3891,
+      "sha256": "8DB8D40C6F35624DDCAAD255082FADD32841522F5D121247CC1AF5323C9E2075"
+    },
+    {
+      "source": "lonANDlat/son.cpp",
+      "archive": "originals/lonANDlat/son.cpp.txt",
+      "bytes": 2322,
+      "sha256": "2AA5AA897982140BC112E292A5BC2F773B3A95062F32F525EE25C73C1DA48026"
+    },
+    {
+      "source": "new_function/test_function.cpp",
+      "archive": "originals/new_function/test_function.cpp.txt",
+      "bytes": 25532,
+      "sha256": "31C38F6E5F40D2512CB83311EF5BF647452773E3479C242A01D68AAD8F200017"
+    },
+    {
+      "source": "operation/main.cpp",
+      "archive": "originals/operation/main.cpp.txt",
+      "bytes": 631,
+      "sha256": "AB5DDFF3A827CEBE0235F64AF10D5E911944A89B61623E50E59426E0E5B92747"
+    },
+    {
+      "source": "order_methods/order.cpp",
+      "archive": "originals/order_methods/order.cpp.txt",
+      "bytes": 3369,
+      "sha256": "400F993507103AA69FAFDD12D9E5E3889CD92B17EF282C1457522BA3E4872224"
+    },
+    {
+      "source": "Pureproject/helloC.c",
+      "archive": "originals/Pureproject/helloC.c.txt",
+      "bytes": 118,
+      "sha256": "C2935064DCAD1BEE15FDA9F292AE02AE87F5F356E98BA933BA37EB0D63CF803D"
+    },
+    {
+      "source": "Pureproject/test.c",
+      "archive": "originals/Pureproject/test.c.txt",
+      "bytes": 203,
+      "sha256": "7544D33D53A0BC323072B8ACAC02585FE61D481A65B830F3DDA5270DB7D4830C"
+    },
+    {
+      "source": "Pureproject/test.h",
+      "archive": "originals/Pureproject/test.h.txt",
+      "bytes": 93,
+      "sha256": "EF35564F2D1E53B61F40F2A84986D27097E071733F2090C94EF5D073DAC492F5"
+    },
+    {
+      "source": "Top_K_C++/assist.h",
+      "archive": "originals/Top_K_C++/assist.h.txt",
+      "bytes": 1128,
+      "sha256": "4FC3EC974ADD9C7D1275BA85E8D113BC8DB97EDDBBF3A4E918A2ABB781222CBA"
+    },
+    {
+      "source": "Top_K_C++/demo.cpp",
+      "archive": "originals/Top_K_C++/demo.cpp.txt",
+      "bytes": 11406,
+      "sha256": "87CD08E82F00086A86A49F18F28D199C55BDE861194FCBACBEAC33FC58843140"
+    },
+    {
+      "source": "Top_K_C++/main.cpp",
+      "archive": "originals/Top_K_C++/main.cpp.txt",
+      "bytes": 904,
+      "sha256": "C46F90884E5F05D979FF8792256D56F7DCED40FA5DB53D9097D27838B572ED99"
+    },
+    {
+      "source": "Top_K_C++/practice.cpp",
+      "archive": "originals/Top_K_C++/practice.cpp.txt",
+      "bytes": 2921,
+      "sha256": "A8529BC7F5FB66D98F947E985E7B9189531F9968F23B773BA113F7224E52692F"
+    },
+    {
+      "source": "10.22/10.22/10.22.cpp",
+      "archive": "originals/10.22/10.22/10.22.cpp.txt",
+      "bytes": 17876,
+      "sha256": "A9279BD05D1C8A40F142B4252D4CD77163F57C9A3F6A9676C07367B43E076638"
+    },
+    {
+      "source": "9_pen_exam/huawei/huawei.cpp",
+      "archive": "originals/9_pen_exam/huawei/huawei.cpp.txt",
+      "bytes": 7567,
+      "sha256": "97880A08F8BFD1E7B081CEDCB7D27E662ECCDF020A12DF0F21E46EDC259DDD12"
+    },
+    {
+      "source": "9_test/9_test/9_test.cpp",
+      "archive": "originals/9_test/9_test/9_test.cpp.txt",
+      "bytes": 10975,
+      "sha256": "E99B06F85F88C1F8762ABA125BF7249B78F4DB763453ED4E4A1D2FFA0D3802DE"
+    },
+    {
+      "source": "byte_dancing/byte_dancing/byte_dancing.cpp",
+      "archive": "originals/byte_dancing/byte_dancing/byte_dancing.cpp.txt",
+      "bytes": 5729,
+      "sha256": "A032C73BB9BC6BDB2F0ACAF720D4D5D9517257C7CBA169FD0C05238895837955"
+    },
+    {
+      "source": "Connect_sql_test/Connect_sql_test/main.cpp",
+      "archive": "originals/Connect_sql_test/Connect_sql_test/main.cpp.txt",
+      "bytes": 110,
+      "sha256": "D39AA63C4FC092AF4967C9DD2460B201F6916169176C3989731C1B8E487867EA"
+    },
+    {
+      "source": "huawei/huawei/huawei.cpp",
+      "archive": "originals/huawei/huawei/huawei.cpp.txt",
+      "bytes": 13699,
+      "sha256": "61068CBDEB46FC705F3EF93E57890A0BD883C1757A82C62510120408483DBA02"
+    },
+    {
+      "source": "jingdong/jingdong/3.cpp",
+      "archive": "originals/jingdong/jingdong/3.cpp.txt",
+      "bytes": 1742,
+      "sha256": "9195DB72C6A54DBF492F7E6C019AFD3DF07E8EA82D37E5B5F0990DD13DB16BB4"
+    },
+    {
+      "source": "mi/mi/mi.cpp",
+      "archive": "originals/mi/mi/mi.cpp.txt",
+      "bytes": 949,
+      "sha256": "BA252AEB366EACB2FC36E6B92010097CC885D61B9AE1CBB00135424429340EE9"
+    },
+    {
+      "source": "pen_exam_8/pen_exam_8/_8_pen_exam.cpp",
+      "archive": "originals/pen_exam_8/pen_exam_8/_8_pen_exam.cpp.txt",
+      "bytes": 18633,
+      "sha256": "B05BD1B0AB6C1280AF550BE7EDBE618A52CA50323C9032F9880607FF3D2BE733"
+    },
+    {
+      "source": "Project1/Project1/test1.cpp",
+      "archive": "originals/Project1/Project1/test1.cpp.txt",
+      "bytes": 3057,
+      "sha256": "1708D20327ECEC14A5905104A2746C91F1C33D6D8BBDECC1CD68E0707EC24728"
+    },
+    {
+      "source": "_10_exam/_10_exam/_10_exam.cpp",
+      "archive": "originals/_10_exam/_10_exam/_10_exam.cpp.txt",
+      "bytes": 1307,
+      "sha256": "45C4F6F2DA927F46395CAE38C78EC8BF9B7FBB2727C6016512225228F79F7816"
+    },
+    {
+      "source": "_top_k_8/_top_k_8/_top_k_8.cpp",
+      "archive": "originals/_top_k_8/_top_k_8/_top_k_8.cpp.txt",
+      "bytes": 23889,
+      "sha256": "98314489CE6C81E195B7DEBE6548181813920188D77594F4FEF3D055BB737CB6"
+    }
+  ]
+}

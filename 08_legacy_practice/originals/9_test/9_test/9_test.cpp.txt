@@ -1,0 +1,414 @@
+﻿#include <iostream>
+#include <vector>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include <queue>
+#include <unordered_map>
+#include <climits>
+using namespace std;
+
+////输入输出流（不给指定输入的大小）
+//int main()
+//{
+//    string nums;
+//    getline(cin, nums);
+//    // nums = nums.substr(1, nums.size() - 2);
+//    stringstream ss(nums);//将nums转化为一个字符串流
+//    string item;
+//    vector<int>result;
+//    while (getline(ss, item, ','))
+//    {
+//
+//        //创建一个新的字符串流对象，用临时字符串 item 初始化，然后将这
+//        // 个字符串流中的内容读取到整数 num 中，实现字符串到整数的转换。
+//        result.push_back(stoi(item));
+//    }
+//
+//    for (const auto& num : result)
+//    {
+//        cout << num << " ";
+//    }
+//    return 0;
+//}
+//
+////一边遍历vector，一边删除vector中的元素(注意迭代器失效，野指针问题)
+//int main(int argc, char* argv[])
+//{
+//    vector<int>y_container;
+//    for (int i = 0; i < 15; ++i)
+//    {
+//        y_container.push_back(i);
+//    }
+//    //定义容器的迭代器
+//    vector<int>::iterator it = y_container.begin();
+//    for (; it != y_container.end();)
+//    {
+//        if (*it == 10)
+//        {
+//            //y_container.erase(it);//删除后指向的不是原来的值（野指针问题）
+//            it = y_container.erase(it);//这样更新一下it迭代器,更新之后*it==11，下次循环会跳出此if。就可以解决野指针问题
+//        }
+//        else
+//        {
+//            cout << *it << std::endl;
+//            it++;
+//        }
+//    }
+//    return 0;
+//}
+
+////memset
+//int main()
+//{
+//	vector<int>v;
+//	for (int i = 0; i < 10; i++)
+//	{
+//		v.push_back(i);
+//		cout << v[i];
+//	}
+//	v.clear();
+//	//memset(v, 0x00, sizeof(v));//memset不能对stl中的容器进行操作（仅对基本类型的数组进行初始化是可以的）
+//	cout << v[0];
+//	return 0;
+//}
+
+////手写atoi函数
+//int my_atoi(const char* str)
+//{
+//	int s = 0;
+//	bool flag = false;
+//	while (*str == ' ')
+//	{
+//		str++;
+//	}
+//
+//	if (*str == '-' || *str == '+')
+//	{
+//		if (*str == '-')
+//		{
+//			flag = true;
+//		}
+//		str++;
+//	}
+//	while (*str>='0'&&*str<='9')
+//	{
+//		s = s * 10 + *str - '0'; 
+//		str++;
+//		if (s < 0)
+//		{
+//			s = 2147483647;
+//			break;
+//		}
+//	}
+//	return s * (flag ? -1 : 1);
+//}
+//
+//int main()
+//{
+//	const char* p = "kko";
+//	cout << my_atoi(p)<<endl;//atoi函数如果遇到不能转换为数字的直接返回0
+//	string str = "123g4";//如果字符串不能转换为整数,stoi函数会抛出一个invalid_argument异常
+//	cout << stoi(str);//stoi函数会从字符串的开头开始转换，直到遇到第一个非数字字符为止。这
+//	                  //意味着如果字符串中的非数字字符位于字符串的中间或末尾，stoi函数
+//					  // 会停止转换，并返回已转换的部分。这是一个更加安全和精确的行为。
+//	return 0;
+//}
+
+////拷贝构造函数  赋值构造函数的区别
+//class Mystring {
+//private:
+//	char* data;
+//
+//public:
+//	//构造函数
+//	Mystring(const char* str = nullptr)
+//	{
+//		if (str)
+//		{
+//			data=new char[strlen(str)+1];
+//			strcpy_s(data, sizeof(data), str);
+//		}
+//		else
+//		{
+//			data = new char[1];
+//			*data = '\0';
+//		}
+//		cout << "构造函数" << endl;
+//	}
+//
+//	//拷贝构造函数
+//	Mystring(const Mystring& other)
+//	{
+//		data = new char[strlen(other.data) + 1];
+//		strcpy_s(data, sizeof(data), other.data);
+//		cout << "拷贝构造函数" << endl;
+//	}
+//
+//	//赋值操作符
+//	Mystring& operator=(const Mystring& other)
+//	{
+//		if (this == &other)//不能自己给自己赋值
+//		{
+//			return *this;
+//		}
+//		delete data;
+//		data = new char[strlen(other.data) + 1];
+//		strcpy_s(data, sizeof(data), other.data);
+//		cout << "赋值构造函数" << endl;
+//		return *this;
+//	}
+//
+//	void show() const 
+//	{
+//		cout << data << endl;
+//	}
+//	~Mystring(){}
+//};
+//
+//
+//int main()
+//{
+//	Mystring str1("hello");//构造函数
+//	str1.show();
+//	Mystring str2(str1);//拷贝构造函数
+//	str2.show();
+//	Mystring str3;
+//	str3 = str1;//赋值构造函数(给已有的对象赋值)
+//	str3.show();
+//	return 0;
+//}
+
+
+//int main()
+//{
+//    vector<int> test = { 1,2 };
+//    cout << sizeof(test) << endl;//vs2017 debug x64输出32，这个大小是vector的固定大小，而非其储存元素占用的内存大小
+//    cout << test.size() << endl;//-->2
+//    cout << &test << endl;//test的地址：000000382B55F738
+//    for (auto& t : test) {//一定要用引用才能得到test的元素的地址，不然只会得到循环变量t的地址
+//        cout << &t << endl;
+//    }
+//    //test[0]的地址：00000150D62D14B0
+//    //test[1]的地址：00000150D62D14B4
+//
+//    vector<int> test1(test.size());
+//    cout << &test1 << endl;//test1的地址：000000382B55F7F8
+//    memcpy(&test1[0], &test[0], sizeof(int)*test.size());
+//    for (auto& t : test1) {
+//        cout << t << endl;
+//    }
+//    //test1[0]的地址：00000150D62D14B0，和test[0]相同
+//    //test1[1]的地址：00000150D62D14B4，和test[1]相同
+//
+//    return 0;//程序退出时引发"读取位置 0xFFFFFFFFFFFFFFFF 时发生访问冲突"的异常
+
+
+////深信服面试  leetcode37 数独残局游戏
+//bool line[9][9];
+//bool column[9][9];
+//bool block[3][3][9];
+//bool valid;
+//vector<pair<int, int>>spaces;
+//    void dfs(vector<vector<char>>& board, int pos) {
+//        if (pos == spaces.size()) {
+//            valid = true;
+//            return;
+//        }
+//
+//       // auto [i, j] = spaces[pos];
+//        for (int digit = 0; digit < 9 && !valid; ++digit) {
+//            if (!line[i][digit] && !column[j][digit] &&
+//                !block[i / 3][j / 3][digit])
+//            {
+//                line[i][digit] = column[j][digit] = block[i / 3][j / 3][digit] =
+//                    true;
+//                board[i][j] = digit + '0' + 1;//int-->char
+//                dfs(board, pos + 1);
+//                line[i][digit] = column[j][digit] = block[i / 3][j / 3][digit] =
+//                    false;
+//            }
+//        }
+//    }
+//    void solveSudoku(vector<vector<char>>& board) {
+//        memset(line, false, sizeof(line));
+//        memset(column, false, sizeof(column));
+//        memset(block, false, sizeof(block));
+//        valid = false;
+//
+//        for (int i = 0; i < 9; ++i) {
+//            for (int j = 0; j < 9; ++j) {
+//                if (board[i][j] == '.') {
+//                    spaces.emplace_back(i, j);
+//                }
+//                else {
+//                    int digit = board[i][j] - '0' - 1;//char-->int
+//                    line[i][digit] = column[j][digit] =
+//                        block[i / 3][j / 3][digit] = true;
+//                }
+//            }
+//        }
+//        dfs(board, 0);
+//    }
+
+    //void foo()
+    //{
+    //    int i = -1;
+    //    if (i = 0) cout << i<<endl;
+    //    else if (i = 1) cout << i;
+    //}
+   /* int main()
+    {
+        foo();
+    }*/
+
+
+//
+//int a = 2;
+//int f(int n)
+//{
+//    static int a = 3;
+//    int t = 0;
+//    if (n % 2)
+//    {
+//        static int a = 4;
+//        t += a++;
+//    }
+//    else
+//    {
+//        static int a = 5;
+//        t += a++;
+//    }
+//    return t + a++;
+//}
+//
+//int main()
+//{
+//    int s = a, i;
+//    for (i = 0; i < 3; i++)
+//    {
+//        s += f(i);
+//    }
+//    cout << s;
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+int maxGcdSubarray(const vector<int>& arr, int n, int k) {
+    int maxGcd = -1;
+    int currentGcd = 0;
+    int start = 0;
+
+    for (int end = 0; end < n; ++end) {
+        currentGcd = gcd(currentGcd, arr[end]);
+        if (end - start + 1 >= k) {
+            if (currentGcd > maxGcd) {
+                maxGcd = currentGcd;
+            }
+            if (currentGcd == arr[start]) {
+                ++start;
+            }
+            else {
+                while (end - start + 1 >= k && currentGcd != arr[start]) {
+                    currentGcd = gcd(currentGcd, arr[start]);
+                    ++start;
+                }
+            }
+        }
+    }
+    return maxGcd;
+}
+
+//int main() {
+//    int n, k;
+//    cin >> n >> k;
+//    vector<int> arr(n);
+//    for (int i = 0; i < n; ++i) {
+//        cin >> arr[i];
+//    }
+//
+//    int result = maxGcdSubarray(arr, n, k);
+//    cout << result << endl;
+//    return 0;
+//}
+//
+//int main()
+//{
+//    int a1 = 0x1234;
+//    printf("0x%x\n",a1&=~4);
+//}
+
+//
+////用宏实现16和32位数据的大小端转换(即高低字节互换)
+//#include <iostream>
+//#include <cstdint>
+//
+//// 16位大小端转换宏
+//#define SWAP16(x) ((uint16_t)( \
+//    (((uint16_t)(x) & (uint16_t)0x00FFU) << 8) | \
+//    (((uint16_t)(x) & (uint16_t)0xFF00U) >> 8) ))
+//
+//// 32位大小端转换宏
+//#define SWAP32(x) ((uint32_t)( \
+//    (((uint32_t)(x) & (uint32_t)0x000000FFUL) << 24) | \
+//    (((uint32_t)(x) & (uint32_t)0x0000FF00UL) <<  8) | \
+//    (((uint32_t)(x) & (uint32_t)0x00FF0000UL) >>  8) | \
+//    (((uint32_t)(x) & (uint32_t)0xFF000000UL) >> 24) ))
+//
+//int main() {
+//    uint16_t num16 = 0x1234;
+//    uint32_t num32 = 0x12345678;
+//
+//    // 执行大小端转换
+//    uint16_t swapped16 = SWAP16(num16);
+//    uint32_t swapped32 = SWAP32(num32);
+//
+//    // 输出转换后的结果
+//    std::cout << "Original 16-bit: 0x" << std::hex << (unsigned)num16 << ", Swapped: 0x" << std::hex << (unsigned)swapped16 << std::endl;
+//    std::cout << "Original 32-bit: 0x" << std::hex << num32 << ", Swapped: 0x" << std::hex << swapped32 << std::endl;
+//
+//    return 0;
+//}
+//0-1 背包问题
+int knapsackDP(vector<int>& wgt, vector<int>& val, int cap) {
+    int n = wgt.size();
+    // 初始化 dp 表
+    vector<int>dp(cap + 1, 0);
+    // 状态转移
+    for (int i = 1; i <= n; i++) {
+        for (int c = cap; c >= 1; c--)//倒序进行
+        {
+            if (wgt[i - 1] <= c)
+            {
+                dp[c] = max(dp[c],dp[c-wgt[i-1]]+val[i-1]);
+            }
+        }
+    }
+    return dp[cap];
+}
+
+//int main()
+//{
+//    vector<int>wgt = { 1,2,3 };
+//    vector<int>value = {5,11,15};
+//    cout << knapsackDP(wgt, value, 4);
+//    return 0;
+//}
+
+//int main()
+//{
+//    vector<int>v = { 1,2,3,4 };
+//    vector<int>u = { 5,6,7,8 };
+//    v.insert(v.end(), u.begin(), u.end());
+//    for (int i = 0; i < v.size(); i++)
+//    {
+//        cout << v[i] << " ";
+//    }
+//    return 0;
+//}
+

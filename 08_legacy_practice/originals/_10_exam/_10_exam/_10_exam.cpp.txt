@@ -1,0 +1,48 @@
+﻿#include <iostream>
+#include <vector>
+#include <sstream>
+#include <string>
+
+int main() {
+    std::vector<std::string> lines;
+    int lineNumber = 1;
+    std::string input;
+    while (std::getline(std::cin, input)) {
+        std::istringstream iss(input);
+        int currentLineNumber;
+        std::string command;
+        std::string content;
+        iss >> currentLineNumber >> command;
+        if (currentLineNumber != lineNumber) {
+            std::cout << "error" << std::endl;
+            continue;
+        }
+        if (command == "i") {
+            iss >> content;
+            lines.push_back(content);
+            lineNumber++;
+        }
+        else if (command == "a") {
+            std::cout << "error" << std::endl;
+        }
+        else if (command == "r") {
+            std::cout << "error" << std::endl;
+        }
+        else if (command == "d") {
+            if (!lines.empty()) {
+                lines.pop_back();
+                lineNumber--;
+            }
+            else {
+                std::cout << "error" << std::endl;
+            }
+        }
+        else {
+            std::cout << "error" << std::endl;
+        }
+    }
+    for (const std::string& line : lines) {
+        std::cout << line << std::endl;
+    }
+    return 0;
+}

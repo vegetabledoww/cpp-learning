@@ -1,0 +1,162 @@
+#include"assist.h"
+//void swap(vector<int>& nums, int left, int right)
+//{
+//	int temp;
+//	temp = nums[left];
+//	nums[left] = nums[right];
+//	nums[left] = temp;
+//}
+//
+//int partition_s(vector<int>& nums, int left, int right)
+//{
+//	int i = left, j = right;
+//	while (i <= j)
+//	{
+//		while (i < j && nums[j] >= left)
+//		{
+//			j--;
+//		}
+//
+//		while (i < j && nums[i] >= left)
+//		{
+//			i++;
+//		}
+//		swap(nums, i, j);
+//	}
+//	swap(nums, i, left);
+//	return i;
+//}
+//
+//void quick_sort(vector<int>& nums, int left, int right)
+//{
+//	if (left >= right) return;
+//	int pivo = partition_s(nums, left, right);
+//	quick_sort(nums, left, pivo - 1);
+//	quick_sort(nums, pivo +1, right);
+//}
+//
+ListNode* list_s(ListNode* head, int n)
+{
+	ListNode* p1 = head;
+	for (int i = 0; i < n; i++)
+	{
+		p1 = p1->next;
+	}
+	ListNode* p2 = head;
+	while (p1)
+	{
+		p1 = p1->next;
+		p2 = p2->next;
+	}
+	return p2;
+}
+
+ListNode* list_delete(ListNode* head, int n)
+{
+	ListNode* dummy = new ListNode(-1);
+	dummy->next = head;
+	ListNode* x = list_s(head,n+1);
+	x->next = x->next->next;
+	return head;
+}
+
+//二叉树的层序遍历
+vector<vector<int>>level_ord(TreeNode* root)
+{
+	vector<vector<int>>res;
+	if (!root)  return res;
+	queue<TreeNode*>q;
+	q.push(root);
+	while (!q.empty())
+	{
+		int sz = q.size();
+		vector<int>l;
+		for (int i = 0; i < sz; i++)
+		{
+			TreeNode* cur = q.front();
+			q.pop();
+			l.push_back(cur->val);
+			if (cur->left)	q.push(cur->left);
+			if (cur->right) q.push(cur->right);
+		}
+		res.push_back(l);
+	}
+}
+
+class LRUCache {
+private:
+	unordered_map<int, DLinkNode*>cache;
+	DLinkNode* head;
+	DLinkNode* tail;
+	int size_;
+	int cap_;
+public:
+	LRUCache(int capacity):size_(0),cap_(capacity)
+	{
+		head = new DLinkNode();
+		tail = new DLinkNode();
+		head->next = tail;
+		tail->prev = head;
+	}
+
+	int get(int key) {
+		if (!cache.count(key))
+		{
+			return -1;
+		}
+		DLinkNode* node = cache[key];
+		MovetoHead(node);
+		return node->value;
+	}
+
+	void put(int key, int value) {
+		if (cache.count(key))
+		{
+			DLinkNode* node = cache[key];
+			node->value = value;
+			MovetoHead(node);
+		}
+
+		else
+		{
+			DLinkNode* node = new DLinkNode(key, value);
+			cache[key] = node;//新建一个结点
+			AddtoHead(node);
+			size_++;
+			if (size_ > cap_)
+			{
+				DLinkNode* removed_ = RemovedTail();
+				cache.erase(removed_->value);
+				size_--;
+				delete(removed_);
+			}
+		}
+	}
+
+	void MovetoHead(DLinkNode* node)
+	{
+		Remove(node);
+		AddtoHead(node);
+	}
+
+	void Remove(DLinkNode* node)
+	{
+		node->next->prev = node->next;
+		node->prev->next = node->prev;
+	}
+
+	void AddtoHead(DLinkNode* node)
+	{
+		node->prev = head;
+		node->next = head->next;
+		head->prev->next = node;
+		head->next = node;
+	}
+
+	DLinkNode* RemovedTail()
+	{
+		DLinkNode* node = tail->prev;
+		Remove(node);
+		return node->prev;
+	}
+};

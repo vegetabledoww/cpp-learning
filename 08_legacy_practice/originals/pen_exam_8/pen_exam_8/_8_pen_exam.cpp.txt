@@ -1,0 +1,784 @@
+#include "C:\\Users\\ZQJ\\source\\repos\\Top_K_C++\\assist.h"
+#include<map>
+//8.17 京东
+//int main()
+//{
+//	int a = 0, b = 0;
+//	cin >> a >> b;
+//	int c = b - a;
+//	int sum = (c + 1) * c / 2;
+//	cout << sum - b;
+//	return 0;
+//}
+
+//int main()
+//{
+//    int n, m;
+//    cin >> n >> m;
+//    string sn, sm;
+//    cin >> sn >> sm;
+//
+//    int res = m + n;
+//    //固定一条字符串，移动另外一条来匹配
+//    for (int j = -m; j < n; j++)   //枚举要匹配的起始点
+//    {
+//        int idxm = j;
+//        int cnt = 0; //cnt表示两个字符串重叠之后小于等于3的长度
+//        bool flag = true;
+//        int idxn = j > 0 ? j : 0;   //sn字符串的匹配起点
+//
+//        for (int i = j; i < j + m; i++)  //sm字符串匹配
+//        {
+//            if (i < 0) continue;
+//            if (idxn >= n) break;
+//            if (sn[idxn] - '0' + sm[i - j] - '0' > 3) {
+//                flag = false;
+//                break;
+//            }
+//            idxn++;
+//            cnt++;
+//        }
+//        if (flag)  res = min(res, m + n - cnt);
+//    }
+//    cout << res;
+//    return 0;
+//}
+
+
+//大疆   818
+//int main()
+//{
+//	int sum_down = 0;
+//	int num_down = 0;
+//	int sum_up = 0;
+//	int num_ip = 0;
+//	unordered_map<int, int>mp;
+//	vector<int>res(16, 0);
+//	cin >> sum_down;
+//	for (int i = 0; i < sum_down; i++)
+//	{
+//		cin >> num_down;
+//		mp[num_down]++;
+//	}
+//	cin >> sum_up;
+//	for (int i = 0; i < sum_up; i++)
+//	{
+//		cin >> num_ip;
+//		mp[num_ip]--;
+//	}
+//	for (const auto& it : mp)
+//	{
+//		res[it.second]++;
+//	}
+//	for (size_t i = 1; i <= 15; i++)
+//	{
+//		cout << res[i] << " ";
+//	}
+//}
+//第二題 
+//string no_01(string& s)
+//{
+//	for (size_t i = 0; i < s.length() - 1; i++)
+//	{
+//		if (s[i] == '0' && s[i + 1] == '1')
+//		{
+//			s[i] = '1';
+//			s[i + 1] = '0';
+//			i++;
+//		}
+//	}
+//	return s;
+//}
+//int main()
+//{
+//	string s;
+//	cin >> s;
+//	int res = 0;
+//	for (int i = 0; i < s.length()-1; i++)
+//	{
+//		if (s[i] == '0' && s[i + 1] == '1')
+//		{
+//			s=no_01(s);
+//			res++;
+//			i = 0;
+//		}
+//	}
+//	cout << res;
+//	return 0;
+//}
+
+//leetcode 207 图
+class Solution {
+private:
+    // 存储有向图
+    vector<vector<int>> edges;
+    // 标记每个节点的状态：0=未搜索，1=搜索中，2=已完成
+    vector<int> visited;
+    // 用数组来模拟栈，下标 0 为栈底，n-1 为栈顶
+    vector<int> result;
+    // 判断有向图中是否有环
+    bool valid = true;
+
+public:
+    void dfs(int u) {
+        // 将节点标记为「搜索中」
+        visited[u] = 1;
+        // 搜索其相邻节点
+        // 只要发现有环，立刻停止搜索
+        for (int v : edges[u]) {
+            // 如果「未搜索」那么搜索相邻节点
+            if (visited[v] == 0) {
+                dfs(v);
+                if (!valid) {
+                    return;
+                }
+            }
+            // 如果「搜索中」说明找到了环
+            else if (visited[v] == 1) {
+                valid = false;
+                return;
+            }
+        }
+        // 将节点标记为「已完成」
+        visited[u] = 2;
+        // 将节点入栈
+        result.push_back(u);
+    }
+
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        edges.resize(numCourses);
+        visited.resize(numCourses);
+        for (const auto& info : prerequisites) {
+            edges[info[1]].push_back(info[0]);
+        }
+        // 每次挑选一个「未搜索」的节点，开始进行深度优先搜索
+        for (int i = 0; i < numCourses && valid; ++i) {
+            if (!visited[i]) {
+                dfs(i);
+            }
+        }
+        if (!valid) {
+            return {};
+        }
+        // 如果没有环，那么就有拓扑排序
+        // 注意下标 0 为栈底，因此需要将数组反序输出
+        reverse(result.begin(), result.end());
+        return result;
+    }
+};
+
+//leetcode 394  字符串解码
+string getDigits(string& s, size_t& ptr)
+{
+    string ret = "";
+    //如果当前字符为数字，则将当前字符入栈，然后继续下一个字符
+    
+    while (isdigit(s[ptr]))
+    {
+        ret.push_back(s[ptr++]);
+        //上述代码相当于
+        /*ret.push_back(s[ptr]);
+        ptr++;*/
+    }
+    return ret;
+}
+
+string getString(vector<string>& v)
+{
+    string ret;
+    //将储存在vector中的若干小字符串拼接为大字符串
+    for (const auto& s : v)
+    {
+        ret += s;
+    }
+    return ret;
+}
+
+string decodeString(string s)
+{
+    vector<string>stk;
+    size_t ptr = 0;
+    while (ptr < s.size())
+    {
+        char cur = s[ptr];
+        if (isdigit(cur))
+        {
+            //获取一个数字并进站
+            string digits = getDigits(s, ptr);
+            stk.push_back(digits);
+        }
+        else if (isalpha(cur) || cur == '[')
+        {
+            //获取一个字母进栈
+            //string(1, s[ptr++])将s[ptr++]的类型由char转换为string
+            stk.push_back(string(1, s[ptr++]));
+        }
+        else
+        {
+            ++ptr;
+            vector<string>sub;
+            while (stk.back() != "[")
+            {
+                sub.push_back(stk.back());
+                stk.pop_back();
+            }
+            reverse(sub.begin(), sub.end());
+            //左括号出栈
+            stk.pop_back();
+            //此时栈顶为当前sub对应的字符串出现的次数
+            int repTime = stoi(stk.back());
+            stk.pop_back();
+            string t, o = getString(sub);
+            while (repTime--) t += o;
+            stk.push_back(t);
+        }
+    }
+    return getString(stk);
+}
+
+//int main()
+//{
+//    Solution s;
+//    vector<vector<int>>vec = { {0,1} ,{2,0},{3,2}, {1,3} };
+//    int num = 4;
+//    vector<int>res=s.findOrder(num, vec);
+//    for (int num : res)
+//        cout << num << " ";
+//    
+//};
+
+////leetcode 88 合并两个有序数组（与合并两个有序连表（21）思路相同）
+//void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+//    int p1 = 0, p2 = 0;
+//    int sorted[m + n];
+//    int cur;
+//    while (p1 < m || p2 < n) {
+//        if (p1 == m) {
+//            cur = nums2[p2++];
+//        }
+//        else if (p2 == n) {
+//            cur = nums1[p1++];
+//        }
+//        else if (nums1[p1] < nums2[p2]) {
+//            cur = nums1[p1++];
+//        }
+//        else {
+//            cur = nums2[p2++];
+//        }
+//        sorted[p1 + p2 - 1] = cur;
+//    }
+//    for (int i = 0; i != m + n; ++i) {
+//        nums1[i] = sorted[i];
+//    }
+//}
+
+
+//8.21 B站第三题
+int minModifications(string& str) {
+    stack<char>stk;
+    int modifications = 0;
+    for (char c : str) {
+        if (c == '{' || c == ']') {
+            stk.push(c);
+        }
+        else {
+            if (!stk.empty()) {
+                if ((c == '}') && stk.top() == '{' || (c == ']' && stk.top() == '[')) {
+                    stk.pop();
+                }
+                else {
+                    modifications++;
+                    stk.pop();
+                }
+            }
+            else {
+                modifications++;
+            }
+        }
+    }
+    modifications += stk.size();
+    return modifications;
+}
+
+//int main() {
+//    int t = 0;
+//    vector<string>str;
+//    cin >> t;
+//    string s;
+//    for (int i = 0; i < t; i++) {
+//        cin >> s;
+//        str.push_back(s);
+//    }
+//    for (auto s : str) {
+//        cout << minModifications(s) << endl;
+//    }
+//}
+
+////8.21华为
+//int main() {
+//    int N, blk;
+//    cin >> N >> blk;
+//    vector<int> nums(N);
+//    for (int i = 0; i < N; i++) {
+//        cin >> nums[i];
+//    }
+//
+//    map<vector<int>, pair<int, int>> res;  // 用于存储数据块及其首次出现的下标和出现次数
+//
+//    for (int i = 0; i < N; i += blk) {
+//        //分块
+//        vector<int> cur_blk(nums.begin() + i, nums.begin() + min(i + blk, N));
+//        if (res.find(cur_blk) == res.end()) {//如果没有找到，则另起炉灶
+//            res[cur_blk] = { i, 1 };
+//        }
+//        else {
+//            res[cur_blk].second += 1;//如果找到，数量加一
+//        }
+//    }
+//
+//    vector<pair<vector<int>, pair<int, int>>> sorted_res(res.begin(), res.end());
+//    sort(sorted_res.begin(), sorted_res.end(), [](const auto& a, const auto& b) {
+//        return a.second.first < b.second.first;
+//        });//按照出现顺序进行排序（仿函数）
+//
+//    vector<int> ans;
+//    for (const auto& kv : sorted_res) {
+//        //在ans后面的位置插入整个kv.first
+//        ans.insert(ans.end(), kv.first.begin(), kv.first.end());
+//        ans.push_back(kv.second.second);
+//    }
+//
+//    for (size_t i = 0; i < ans.size(); ++i) {
+//        cout << ans[i];
+//        if (i != ans.size() - 1) cout << " ";//输出的结果最后没有空格，否则0分
+//    }
+//    cout << endl;
+//
+//    return 0;
+//}
+////第二题
+//int solve(deque<int>machines, const vector<int>& tasks)
+//{
+//    for (int task : tasks)
+//    {
+//        int cnt = 0;
+//        while (cnt < machines.size() && task != machines.front())//完全匹配
+//        {
+//            machines.push_back(machines.front());
+//            machines.pop_front();//头部节点删除
+//            cnt++;
+//        }
+//
+//        if (cnt >= machines.size())
+//        {
+//            break;
+//        }
+//        if (task == machines.front())
+//        {
+//            machines.pop_front();
+//        }
+//    }
+//    return machines.size();
+//}
+//
+//int main()
+//{
+//    int n;
+//    cin >> n;
+//    vector<int>tasks(n);
+//    vector<int>machines(n);
+//    for (int i = 0; i < n; i++)
+//    {
+//        cin >> tasks[i];
+//    }
+//    for (int i = 0; i < n; i++)
+//    {
+//        cin >> machines[i];
+//    }
+//
+//    deque<int>machines_copy0(machines.begin(), machines.end());
+//    deque<int>machines_copy1(machines.begin(), machines.end());
+//
+//    //转换通用机器
+//    for (int& m : machines_copy0)
+//    {
+//        if (m == 2) m == 0;
+//    }
+//    for (int& m : machines_copy1)
+//    {
+//        if (m == 2) m = 1;
+//    }
+//
+//    //计算剩余最小空置执行机数量
+//    cout << min(solve(machines_copy0, tasks), solve(machines_copy1, tasks)) << endl;
+//    return 0;
+//}
+
+//第三题
+int jobNum;
+vector<int> times;
+unordered_map<int, unordered_set<int>> mutex;
+int ans = 1;
+int cost = INT_MAX;
+
+bool check(int i, const unordered_set<int>& usd) {
+    for (int u : usd) {
+        if (mutex[u].count(i) || mutex[i].count(u)) return false;
+    }
+    return true;
+}
+
+void dfs(int i, unordered_set<int>& usd, int time) {
+    if (i >= jobNum) {
+        if (ans <= (int)usd.size()) {
+            if (ans < (int)usd.size()) {
+                ans = usd.size();
+                cost = time;
+            }
+            else if (ans == (int)usd.size()) {
+                if (time < cost) {
+                    cost = time;
+                }
+            }
+        }
+        return;
+    }
+    if (usd.size() + jobNum - i + 1 < ans) return;
+    dfs(i + 1, usd, time);
+    if (check(i, usd)) {
+        usd.insert(i);
+        dfs(i + 1, usd, time + times[i]);
+        usd.erase(i);
+    }
+}
+//
+//int main() {
+//    cin.tie(0);
+//    cin >> jobNum;
+//    times.resize(jobNum);
+//    for (int i = 0; i < jobNum; i++) {
+//        cin >> times[i];
+//    }
+//
+//    int mutexNum;
+//    cin >> mutexNum;
+//
+//    for (int i = 0; i < mutexNum; i++) {
+//        int a, b;
+//        cin >> a >> b;
+//        a--; b--;
+//        mutex[a].insert(b);
+//        mutex[b].insert(a);
+//    }
+//
+//    unordered_set<int> usd;
+//    dfs(0, usd, 0);
+//
+//    cout << cost << endl;
+//
+//    return 0;
+//}
+//
+//#define power1(x) x*x
+//int main()
+//{
+//    int x = 3;
+//    int y = 4;
+//    //这里/后面的power1(x+1)的结果为7，如果想要得到正确的结果，
+//      应该强制类型转换为为int
+//    cout << y/power1(x + 1);
+//    cout << y / int(power1(x + 1));
+//}
+
+//
+////8.24美团
+//int main() {
+//    int a, b, c, k;
+//    cin >> a >> b >> c >> k;
+//    long long product = (long long)a * b * c;
+//    for (int i = 0; i < k; i++) {
+//        if (a <= b && a <= c) {
+//            a++;
+//        }
+//        else if (b <= a && b <= c) {
+//            b++;
+//        }
+//        else {
+//            c++;
+//        }
+//        product = ((long long)a * b * c) % 1000000007;
+//    }
+//    cout << product << endl;
+//    return 0;
+//}
+
+//
+void foo(string&& s)//右值引用
+{
+    cout << 1 << endl;
+}
+
+void foo(string& s)//左值引用
+{
+    cout << 2 << endl;
+}
+
+void Demo()
+{
+    string s1 = "213";
+    foo(s1);
+    foo(static_cast<string&&>(s1));//强制类型转换符
+}
+//int main()
+//{
+//    string s1 = "123";
+//    foo(s1);
+//    //移动语义（静态多态）
+//    //此时经过右值引用，s1就变为了将亡值
+//    foo(move(s1));//所有权的转移(浅复制)
+//    Demo();
+//    return 0;
+//}
+
+
+
+void func(int& x) {
+    std::cout << "lvalue reference: " << x << std::endl;
+}
+
+void func(int&& x) {
+    std::cout << "rvalue reference: " << x << std::endl;
+}
+
+template<typename T>
+void wrapper(T&& arg) {
+    func(std::forward<T>(arg));//完美转发：不改变左右值的属性
+}
+
+//int main() {
+//    int x = 42;
+//    int&& y = 2;//右值引用
+//    //常数也是右值
+//    /*右值代表一个临时的值，不能被取地址，不能被修改，是不能出现在赋值语句的左边的。*/
+//    wrapper(x);  // lvalue reference: 42
+//    wrapper(y);  // rvalue reference: 1
+//    return 0;
+//}
+// 析构函数和虚析构函数
+class Base
+{
+public:
+    Base()
+    {
+        /*cout << "父类构造函数" << endl;*/
+    };
+    virtual ~Base()//父类的虚构函数声明为虚函数（虚析构函数）
+    {
+        cout << "父类析构函数执行" << endl;
+    }
+    void print()
+    {
+        cout << "弗雷打印" << endl;
+    }
+};
+
+class Deriver :public Base
+{
+public:
+    Deriver() {};
+    ~Deriver()
+    {
+        cout << "子类析构函数执行" << endl;
+    };
+    void print() 
+    {
+        cout << "子类打印" << endl;//覆盖
+    }
+};
+//int main()
+//{
+//    Base* p = new Deriver;//父类的指针指向子类的对象
+//    p->print();
+//    delete p;
+//    return 0;
+//}
+
+//字节对齐案例
+struct son_class
+{
+    double k;
+    int m;
+    char v;
+};
+//sizeof(son_class)=16
+struct class_1
+{
+    char a;//1+7=8
+    son_class l;//8+16=24
+    int e;//24+4=28
+    short c;//28+2=30
+    char b;//30+1+1=32
+    short p;//32+2=34
+    char h;//34+1+1=36
+    short y;//36+2=38
+    unsigned char i : 4;//38+0.5=38.5，占半个字节
+    unsigned char u : 4;
+};//-->32(必须是8的倍数)
+
+#pragma pack(push)
+#pragma pack(1)//手动设置结构体对齐大小为1，如果不设置默认为结构体中最大的一个
+struct class_2
+{
+    static int u;//静态成员变量不占用结构体空间
+    float c;
+    son_class l;
+    int b;
+    char a;
+};
+#pragma pack(pop)
+//
+//int main()
+//{
+//    class_1 A;
+//    cout << sizeof(A);
+//}
+//int main()
+//{
+//    char x[] = "abcdefg";
+//    char y[] = { 'a','b','c','d','e','f','g' };
+//    string z = "abcdefg";
+//    char* p = x;
+//    char str[100] = { 0 };
+//    cout << strlen(x) << " ";//-->7
+//    cout << sizeof(x) << " ";//-->8
+//    cout << sizeof(y) << " ";//-->7
+//    cout << sizeof(z) << " ";//-->40(与编译器有关)
+//    cout << sizeof(p) << " ";//-->8(64位操作系统下指针占8个字节)
+//    cout << sizeof(str) << " ";//-->100 定义了字符数组大小为100
+//    return 0;
+//}
+
+////字符串  字符数组  字符串拷贝函数 结构体拷贝函数
+//int main()
+//{
+//    //strlen函数用法
+//    char des[] = "hello";
+//    string str = "hello";
+//    char* c = des;
+//    cout << strlen(des)<<endl;//返回字符串的长度，不包括终止符\0 -->5
+//    cout << str.length()<<endl;//返回字符串的长度，不包括终止符\0 -->5
+//    cout << str.size()<<endl;//返回字符串的长度，不包括终止符\0 -->5
+//    cout << sizeof(str) << endl;//返回开辟空间的大小（与编译器有关）-->40
+//    cout << sizeof(des)<<endl;//计算字符串的长度，包括终止符\0 -->6（双引号下为字符串）
+//    cout << sizeof(c) << endl;//指针类型，在64位计算机占8字节
+//    char str_des[100] = {0};//目标字符串
+//    //strcpy(str_des,"world");
+//    strcpy_s(str_des, sizeof(str_des), des);
+//    for (size_t i = 0; i < strlen(str_des); i++)
+//    {
+//        cout << str_des[i];
+//    }
+//    cout << endl;
+//    char str_mem[10] = { 0 };
+//    memcpy(str_mem, des, sizeof(des));
+//    for (size_t i = 0; i < strlen(str_mem); i++)
+//    {
+//        cout << str_mem[i];
+//    }
+//    return 0;
+//}
+
+struct LinkNode
+{
+    int val;
+    LinkNode* next;
+    LinkNode(int val) :val(val), next(nullptr) {}
+   // LinkNode() {};
+};
+
+//删除链表中给定的节点（给定的链表中的值互不相同）
+LinkNode* deleteNode(LinkNode* head, int val)
+{
+    if (head->val == val) return head->next;
+    LinkNode* pre = head, * cur = head->next;
+    while (cur!=nullptr &&cur->val!=val)
+    {
+        pre = cur;//控制前面的指针向下走
+        cur = cur->next;//控制当前指针向下走
+    }
+    if (cur) pre->next = cur->next;//不为空，则向下推进
+    return head;
+}
+
+////单链表的创建操作
+//LinkNode *creat_linknode(LinkNode* L,int &n)
+//{
+//    L = new LinkNode;
+//    L->next = nullptr;
+//    LinkNode *p, *r;//p是头结点，r是尾结点
+//    r = L;//令：新建的结点为尾部结点（这样就新建了空节点）
+//    while (n--)
+//    {
+//        LinkNode* p;
+//        cin >> p->val;
+//        r->next = p;
+//        p->next = nullptr;//p成为了新的尾部结点
+//        r = p;
+//    }
+//    return L;
+////}
+//int main()
+//{
+//    int num = 0;
+//    cin >> num;   
+//    LinkNode* head = nullptr;
+//    head = new LinkNode(0);
+//    head->next = new LinkNode(1);
+//    head->next->next = new LinkNode(2);
+//    head->next->next->next = new LinkNode(3);
+//    LinkNode *ans = deleteNode(head, num);
+//    while (ans)
+//    {
+//        cout << ans->val;
+//        ans = ans->next;
+//    }
+//    return 0;
+//}
+
+
+
+
+void findBestArrangement(int n, int m) {
+    std::vector<int> arrangement(n, 0);
+    if (m >= n) {
+        // 如果收藏品数量大于等于格子数量，每个格子放一个，剩余的从第一个格子开始依次添加
+        int each = m / n;
+        int remaining = m % n;
+        for (int i = 0; i < n; ++i) {
+            arrangement[i] = each;
+            if (remaining > 0) {
+                arrangement[i]++;
+                remaining--;
+            }
+        }
+    }
+    else {
+        // 如果收藏品数量小于格子数量，将收藏品集中放在一侧，使得相邻格子数量差最大
+        arrangement[0] = m;
+    }
+
+    // 输出摆放方案
+    for (int num : arrangement) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+}
+
+//int main() {
+//    int n = 1;
+//    int m = 50;
+//    findBestArrangement(n, m);
+//    return 0;
+//}
+
+

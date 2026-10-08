@@ -1,0 +1,273 @@
+﻿//1.01串
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+int main() {
+    int n;
+    long long k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    string res = s;
+    vector<bool>flips(n, false);
+    long long flips_used = 0;
+
+    for (int i = 0; i < n && flips_used < k; ++i)
+    {
+        if (s[i] == '1')
+        {
+            res[i] = '0';
+            flips[i] = true;
+            flips_used += 1;
+        }
+    }
+    long long flips_remaining = k - flips_used;
+    for (int i = 0; i < n && flips_remaining >= 2; i++)
+    {
+        flips[i] = flips[i] + 2;
+        flips_used += 2;
+        flips_remaining -= 2;
+    }
+    if (flips_remaining == 1)
+    {
+        bool flipped = false;
+        for (int i = 0; i < n; i++)
+        {
+            if (s[i] == '1' && flips[i] == 0)
+            {
+                res[i] = '0';
+                flips[i] = flips[i] + 1;
+                flips_used += 1;
+                flips_remaining -= 1;
+                flipped = true;
+                break;
+            }
+        }
+        if (!flipped)
+        {
+            for (int i = n - 1; i >= 0; --i)
+            {
+                if (s[i] == '0')
+                {
+                    res[i] = '1';
+                    flips[i] = flips[i] + 1;
+                    flips_used += 1;
+                    flips_remaining -= 1;
+                    break;
+                }
+            }
+        }
+    }
+    cout << res << endl;
+    return 0;
+}
+
+//2.小红的树上加边
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int>degree(n + 1, 0);
+    for (int i = 0; i < n - 1; ++i)
+    {
+        int u, v;
+        cin >> u >> v;
+        degree[u]++;
+        degree[v]++;
+    }
+    int max_edges = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (degree[i] > 1)
+        {
+            max_edges += (degree[i] * (degree[i] - 1)) / 2;
+        }
+    }
+    cout << max_edges << endl;
+    return 0;
+}
+
+//3.小红的数组询问
+#include <climits>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+const int MAXN = 2005;
+typedef long long ll;
+int n, q;
+ll a[MAXN];
+ll prefix_sum[MAXN];
+ll max_sum_len[MAXN];
+int log2_table[MAXN];
+ll st[MAXN][12];
+void compute_prefix_sums()
+{
+    prefix_sum[0] = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        prefix_sum[i] = prefix_sum[i - 1] + a[i];
+    }
+}
+
+void compute_max_sum_len()
+{
+    for (int i = 1; i < n; ++i)
+    {
+        max_sum_len[i] = LLONG_MIN;
+    }
+    for (int i = 1; i <= n; ++i)
+    {
+        ll sum = 0;
+        for (int j = i; j <= n; ++j)
+        {
+            sum += a[j];
+            int len = j - i + 1;
+            if (sum > max_sum_len[len])
+            {
+                max_sum_len[len] = sum;
+            }
+        }
+    }
+}
+
+void precompute_log2()
+{
+    log2_table[1] = 0;
+    for (int i = 2; i <= n; i++)
+    {
+        log2_table[i] = log2_table[i / 2] + 1;
+    }
+}
+
+void build_sparse_table()
+{
+    for (int i = 1; i <= n; i++)
+    {
+        st[i][0] = max_sum_len[i];
+    }
+    int max_k = log2_table[n];
+    for (int k = 1; k <= max_k; ++k)
+    {
+        for (int i = 1; i + (1 << k) - 1 <= n; ++i)
+        {
+            st[i][k] = max(st[i][k - 1], st[i + (1 << (k - 1))][k - 1]);
+        }
+    }
+}
+
+ll query(int l, int r)
+{
+    int len = r - l + 1;
+    int k = log2_table[len];
+    return max(st[l][k], st[r - (1 << k) + 1][k]);
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cin >> n >> q;
+    for (int i = 1; i <= n; ++i)
+    {
+        cin >> a[i];
+    }
+    compute_prefix_sums();
+    compute_max_sum_len();
+    precompute_log2();
+    build_sparse_table();
+    while (q--)
+    {
+        int l, r;
+        cin >> l >> r;
+        ll ans = query(l, r);
+        cout << ans << '\n';
+    }
+    return 0;
+}
+
+
+//4.子序列个数
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+using namespace std;
+const int mod = 1e9 + 7;
+class BIT
+{
+public:
+    vector<int>tree;
+    int size;
+    BIT(int n)
+    {
+        size = n + 2;
+        tree.resize(size, 0);
+    }
+    void update(int idx, int val)
+    {
+        while (idx < size)
+        {
+            tree[idx] = (tree[idx] + val) % mod;
+            idx += idx & -idx;
+        }
+    }
+    int query(int idx)
+    {
+        int res = 0;
+        while (idx > 0)
+        {
+            res = (res + tree[idx]) % mod;
+            idx -= idx & -idx;
+        }
+        return res;
+    }
+
+    int queryRange(int l, int r)
+    {
+        return (query(r) - query(l - 1) + mod) % mod;
+    }
+};
+
+int main()
+{
+    int n;
+    cin >> n;
+    vector<int>a(n);
+    vector<int>unique_vals;
+    for (int i = 0; i < n; ++i)
+    {
+        cin >> a[i];
+        unique_vals.push_back(a[i]);
+    }
+    sort(unique_vals.begin(), unique_vals.end());
+    unique_vals.erase(unique(unique_vals.begin(), unique_vals.end()), unique_vals.end());
+    map<int, int>compress;
+    int idx = 1;
+    for (int val : unique_vals)
+    {
+        compress[val] = idx++;
+    }
+    int m = unique_vals.size();
+    BIT bit(m);
+    vector<int>dp(n);
+    int total_dp_sum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int idx = compress[a[i]];
+        int total_sum = bit.query(m);
+        int sum = (total_sum - bit.query(idx) + mod) % mod;
+        dp[i] = (sum + 1) % mod;
+        bit.update(idx, dp[i]);
+        total_dp_sum = (total_dp_sum + dp[i]) % mod;
+    }
+    cout << total_dp_sum << endl;
+    return 0;
+
+}

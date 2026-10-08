@@ -15,12 +15,15 @@
 | `05_design_problems` | 给定类或函数接口，需要补写业务逻辑的设计题 |
 | `06_design_patterns` | 单例等经典设计模式 |
 | `07_case_studies` | 包含多个实现版本、文档和图片的完整案例 |
+| `08_legacy_practice` | 去年手敲源码的独立整理集：84个可运行学习文件、26份原稿副本与来源映射 |
 | `29project` | 独立且有机的项目，内部结构和文件保持原样 |
 | `90_scratch_and_incomplete` | 多知识点混合练习、空文件或待修复代码 |
 | `artifacts` | 尚需归位的少量数据文件和非 C++ 配置；已批准的旧产物已清理 |
 | `build` | 新的编译产物目录，不存放源码 |
 
 ## 分类索引
+
+- [C++ 手敲练习（一）](./practice_set_01.md)：参考仓内代码改编的三题练习，难度为 4.5 / 5 / 6 分，含一道接口设计题，不涉及 DP 或树结构。
 
 ### STL
 
@@ -62,11 +65,16 @@
 - `04_algorithms/backtracking`：数独回溯。
 - `04_algorithms/sliding_window`：固定上限窗口、可变长度滑动窗口、前缀和与连续子串问题。
 - `04_algorithms/string_parsing`：MAC 地址识别与规范化。
+- `04_algorithms/simulation/text_editor`：字符串模拟，包含大小写切换、插入删除、跨行光标移动和空行处理。
 
 ### 设计题与案例
 
 - `05_design_problems/application_usage`：应用资源聚合、多规则排序和 Top-3。
+- `05_design_problems/code_stats_system`：代码量增减、按产品或全局汇总，以及语言排名；保留扫描记录的直观实现。
 - `05_design_problems/arp_system`：ARP 表、报文缓存和淘汰规则。
+- `05_design_problems/dhcp_server`：DHCP 地址申请、释放与回收复用，按明确标注的练习约定补齐原草稿。
+- `05_design_problems/multi_window_system`：多窗口创建、销毁、移动和点击分发，练习矩形边界、全局置顶与失败操作状态保持。
+- `05_design_problems/resource_dispatch_system`：按最小足够容量和最小下标分配机器，练习 `set<pair<int,int>>` 与 `lower_bound`。
 - `05_design_problems/video_service`：视频频道分配、计费和释放后的资源迁移。
 - `05_design_problems/timer_system`：周期定时器的启动、停止和超时事件模拟。
 - `05_design_problems/log_system`：日志文件滚动、全局 FIFO 淘汰和多状态维护。
@@ -74,6 +82,11 @@
 - `06_design_patterns/singleton`：单例模式示例。
 - `07_case_studies/health_exercise`：健康运动步数统计的多个实现及说明资料。
 - `07_case_studies/server_busy`：服务器空闲时段统计的分步实现与事件扫描优化版。
+
+### 去年手敲代码整理集
+
+- [08_legacy_practice 学习入口](./08_legacy_practice/README.md)：单独收纳来自 `D:\Code\source\repos` 的代码，含基础8份、数据结构14份、算法59份、数值案例3份。
+- [来源映射](./08_legacy_practice/SOURCES.md)、[修复记录](./08_legacy_practice/FIXES.md)、[待确认片段](./08_legacy_practice/PENDING.md)。原始副本不参加编译，缺少题意的片段不标为已修复。
 
 ## Codex 题目整理 Skill
 

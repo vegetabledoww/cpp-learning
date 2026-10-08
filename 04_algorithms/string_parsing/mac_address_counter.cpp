@@ -60,7 +60,7 @@ class Solution {
                 }
                 mac+=toupper(a);                         // 统一转大写，便于去重
                 mac+=toupper(b);
-                if(g<5)                                  // 前 5 个字节后需要跟分隔符
+                if(g<5)                                  // 前 5 个字节后需要跟分隔符，最后一个不用
                 {
                     if(s[i+g*3+2]!=sep)                  // 分隔符必须保持一致，不能混用，否则放弃
                         return;

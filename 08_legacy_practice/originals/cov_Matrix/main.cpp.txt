@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<double> data = { 1, 2, 3, 4, 5 };
+    int sampleSize = data.size();
+
+    // 计算均值
+    double mean = 0;
+    for (double num : data) {
+        mean += num;
+    }
+    mean /= sampleSize;
+
+    // 计算协方差矩阵
+    double covMatrix[5][5] = {};
+    for (int i = 0; i < sampleSize; i++) {
+        for (int j = 0; j < sampleSize; j++) {
+            double cov = (data[i] - mean) * (data[j] - mean);
+            covMatrix[i][j] = cov / (sampleSize - 1);
+        }
+    }
+
+    // 打印协方差矩阵
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            std::cout << covMatrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    return 0;
+}

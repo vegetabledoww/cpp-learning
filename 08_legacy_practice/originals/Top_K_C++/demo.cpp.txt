@@ -1,0 +1,557 @@
+#include"assist.h"
+void print_nums(vector<int>ans)
+{
+	for (auto vec : ans)
+	{
+		cout << vec << " ";
+	}
+}
+//1.使用递归及非递归两种方式实现快速排序
+//a.递归方式实现快速排序
+void swap(vector<int>& num, int i, int j)
+{
+	int tmp;
+	tmp = num[j];
+	num[j] = num[i];
+	num[i] = tmp;
+}
+
+int partition_s(vector<int>& num, int left, int right)
+{
+	int i = left, j = right;
+	while (i < j)
+	{
+		while (i < j && num[j] >= num[left])//从右往左找大于标准值的数据
+		{
+			j--;
+		}
+		while (i < j && num[i] <= num[left])
+		{
+			i++;
+		}
+		swap(num, i, j);
+	}
+	swap(num,i,left);
+	return i;
+}
+
+void quickSort(vector<int>& num, int left, int right)
+{
+	if (left >= right)
+	{
+		return;
+	}
+	int priovt = partition_s(num, left, right);//轴点
+	quickSort(num, left, priovt-1);//对轴点左侧的数据排序
+	quickSort(num, priovt + 1, right);//对轴点右侧的数据排序
+}
+//b.非递归快速排序：利用栈来对递归进行手动模拟，非递归而胜似递归
+//计算机在实现递归时会调用系统的堆栈，这很消耗计算机内存资源，所以采
+//用非递归算法的本质就是手动模拟系统的堆栈调用来降低电脑资源的消耗。
+void quickSort_not_recursion(vector<int>& num, int left, int right)
+{
+	stack<int>s;
+	if (left < right)
+	{
+		int boundary = partition_s(num, left, right);
+		if (boundary - 1 > left)//确保左分区存在
+		{
+			//将左分区端点入栈
+			s.push(left);
+			s.push(boundary - 1);
+		}
+		if (boundary + 1 < right)
+		{
+			s.push(boundary + 1);
+			s.push(right);
+		}
+		while (!s.empty())
+		{
+			//得到某分区的左右边界
+			int r = s.top();
+			s.pop();
+			int l = s.top();
+			s.pop();
+
+			boundary = partition_s(num, l, r);
+			if (boundary-1 > l)//确保左分区存在
+			{
+				//将左分区端点入栈
+				s.push(l);
+				s.push(boundary - 1);
+			}
+			if (boundary + 1 < r)
+			{
+				s.push(boundary + 1);
+				s.push(r);
+			}
+		}
+	}
+}
+
+//2.环形链表（leetcode141）/(leetcode142  环形链表2)
+//a.哈希表
+bool hasCycle(ListNode* head) {
+	unordered_set<ListNode*>MP;
+	while (head != nullptr)
+	{
+		if (MP.count(head))//已经存在此结点
+		{
+			return true;//如果是1，是环
+		}
+		MP.insert(head);
+		head = head->next;
+	}
+	return false;//遍历结束，返回false，不是环
+}
+
+//b.快慢指针
+bool hasCycle_fastslow(ListNode* head) {
+	ListNode* fast = head, * slow = head;//初始化快慢指针
+	while (fast != nullptr && fast->next != nullptr)
+	{
+		//快指针一次走两步，慢指针一次走一步
+		fast = fast->next->next;
+		slow = slow->next;
+		if (slow == fast)  return true;
+	}
+	return false;
+}
+
+//4.LRU缓存机制
+class LRUCache {
+private:
+	unordered_map<int, DLinkNode*>cache;
+	DLinkNode* head;
+	DLinkNode* tail;
+	int size;
+	int capacity;
+
+public:
+	LRUCache(int capacity) :capacity(capacity), size(0)//初始化类成员变量列表（：后面的内容） 
+	{
+		//使用伪头部和尾部节点
+		head = new DLinkNode();
+		tail = new DLinkNode();
+		head->next = tail;
+		tail->prev = head;
+	}
+
+	int get(int key)
+	{
+		//key不存在
+		if (!cache.count(key))
+		{
+			return -1;
+		}
+		//如果key存在，先通过哈希表定位，再转移到头部
+		DLinkNode* node = cache[key];
+		moveToHead(node);
+		return node->value;
+	}
+
+	void put(int key, int value) {
+		if (!cache.count(key))
+		{
+			//如果key不存在，则创建一个新的节点
+			DLinkNode* node = new DLinkNode(key, value);
+			//添加进哈希表中
+			cache[key] = node;
+			//添加至双向链表的头部
+			addToHead(node);
+			++size;
+			if (size > capacity)
+			{
+				//超出缓存的最大容量
+				DLinkNode* removed = removeTail();//删除尾部节点
+				//删除哈希表中对应的项
+				cache.erase(removed->key);
+				//防止内存泄露
+				delete removed;
+				--size;
+			}
+		}
+		else
+		{
+			//如果key存在，先通过哈希表定位，再修改value，并移到头部
+			DLinkNode* node = cache[key];
+			node->value = value;
+			moveToHead(node);
+		}
+	}
+	//将node结点添加到头部（双向链表的添加结点）
+	void addToHead(DLinkNode* node)
+	{
+		node->prev = head;
+		node->next = head->next;
+		head->next->prev = node;
+		head->next = node;
+	}
+	//将node结点删除（双向链表的删除结点）
+	void removedNode(DLinkNode* node)
+	{
+		node->prev->next = node->next;
+		node->next->prev = node->prev;
+	}
+	//将node结点调整到头部
+	void moveToHead(DLinkNode* node)
+	{
+		removedNode(node);//先删除
+		addToHead(node);//后移动到头部
+	}
+	//删除尾部结点（缓存满了的时候调用）
+	DLinkNode* removeTail()   
+	{
+		DLinkNode* node = tail->prev;
+		removedNode(node);
+		return node;
+	}
+};
+//5.非递归实现链表反转(迭代)
+ListNode* reverseList(ListNode* head)
+{
+	ListNode* prev = nullptr;//前指针结点
+	ListNode* curr = head;//当前指针结点
+	//每次循环，都将当前节点指向它前面的节点，然后当前节点和前节点后移
+	while (curr) {
+		ListNode* next = curr->next;//临时节点，暂存当前节点的下一节点，用于后移
+		curr->next = prev;//将当前节点指向它前面的节点
+		prev = curr; //前指针后移
+		curr = next;//当前指针后移
+	}
+	return prev;
+}
+
+//递归实现链表反转
+// 递归一遍的状态
+//1-->2-->3-->4
+//1<--2-->3-->4
+ListNode* reverseList_rec(ListNode* head) {
+	if (head == nullptr || head->next == nullptr) {
+		return head;
+	}
+	ListNode* last = reverseList_rec(head->next);
+	head->next->next = head;
+	head->next = nullptr;
+	return last;
+}
+
+
+//5.删除链表的倒数第N个结点(leetcode19)
+//找到倒数第k个结点（一次遍历找到结果）
+ListNode* findFromEnd(ListNode* head, int n) {
+	ListNode* p1 = head;
+	//p1先走k步
+	for (int i = 0; i < n; i++)
+	{
+		p1 = p1->next;
+	}
+	ListNode* p2 = head;
+	while (p1)
+	{
+		p1 = p1->next;
+		p2 = p2->next;
+	}
+	return p2;
+}  
+
+ListNode* removeNthFromEnd(ListNode* head, int k)
+{
+	//一般操作一个链表，用到下面两行代码（伪节点）
+	ListNode* dummy = new ListNode(-1);
+	dummy->next = head;
+	//n+1?  这里是找的倒数第k个结点的前一个结点，便于删除第k个结点
+	ListNode* x = findFromEnd(dummy, k + 1);
+	x->next = x->next->next;
+	head = dummy->next;
+	delete(dummy);
+	return head;
+}
+
+//6.用两个栈来实现队列（leetcode232）
+class MyQueue {
+private:
+	stack<int>s1, s2;//输入栈  输出栈
+public:
+	MyQueue() {}
+	
+	void in2out()//输入栈-->输出栈
+	{
+		while (!s1.empty())
+		{
+			s2.push(s1.top());
+			s1.pop();
+		}
+	}
+	void push(int x)
+	{
+		s1.push(x);
+	}
+
+	int pop() 
+	{
+		if (s2.empty())//只有输出栈为空的时候才会考虑倒栈
+			in2out();
+		int x = s2.top();
+		s2.pop();
+		return x;
+	}
+
+	int peek() //返回最顶元素（类似s.top()）
+	{
+		if (s2.empty())
+			in2out();
+		return s2.top();
+	}
+
+	bool empty()
+	{
+		return s1.empty() && s2.empty();
+	}
+};
+
+
+//7.路径总和
+//（1）.二叉树的层序遍历(BFS)
+vector<vector<int>> levelOrder(TreeNode* root) 
+{
+	vector<vector<int>>res;
+	if (!root)  return res;
+	queue<TreeNode*>q;
+	q.push(root);
+	//while循环控制从上到下一层遍历
+	while (!q.empty())
+	{
+		int sz = q.size();
+		//记录这一层节点值
+		vector<int>level;
+		//for循环控制每一层的值从左到右遍历
+		for (int i = 0; i < sz; i++)//每一层的大小
+		{
+			TreeNode* cur = q.front();
+			q.pop();
+			level.push_back(cur->val);
+			if (cur->left) q.push(cur->left);
+			if (cur->right) q.push(cur->right);
+		}
+		res.push_back(level);
+	}
+	return res;
+}
+
+//（2）.路径总和（leetcode112）
+bool hasPathSum(TreeNode* root, int targetSum) {
+	if (!root) return 0;
+	queue<TreeNode*>que;
+	queue<int>que_val;
+	que.push(root);
+	que_val.push(root->val);
+	while (!que.empty())
+	{
+		TreeNode* now = que.front();
+		int temp = que_val.front();
+		que.pop();
+		que_val.pop();
+		if (!now->left && !now->right)
+		{
+			if (temp == targetSum) return true;
+			else continue;
+		}
+		if (now->left)
+		{
+			que.push(now->left);
+			que_val.push(now->left->val + temp);
+		}
+		if (now->right)
+		{
+			que.push(now->right);
+			que_val.push(now->right->val + temp);
+		}
+	}
+	return false;
+}
+//（3）引爆最多的炸弹（leetcode2101）
+int maximumDetonation(vector<vector<int>>& bombs) 
+{
+	int n = bombs.size();
+	auto cmp = [&](int i, int j)->bool
+		{
+			long long dx = bombs[i][0] - bombs[j][0];
+			long long dy = bombs[i][1] - bombs[j][1];
+			return  (long long)bombs[i][2] * bombs[j][2] > dx*dx+dy*dy;
+		};
+	//有向图
+	unordered_map<int, vector<int>>mp;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (i != j && cmp(i, j))
+			{
+				mp[i] .push_back(j);
+			}
+		}
+	}
+	//在此开始，用BFS
+	int res = 0;
+	for (int i = 0; i < n; i++)
+	{
+		int cnt = 1;
+		vector<bool>visited(n);
+		queue<int>q;
+		q.push(i);
+		visited[i] = 1;
+		while (!q.empty())
+		{
+			int cidx = q.front();
+			q.pop();
+			for (const int nidx : mp[cidx])
+			{
+				if (visited[nidx])  continue;
+				cnt++;
+				q.push(nidx);
+				visited[nidx] = 1;
+			}
+			res = max(res, cnt);
+		}
+	}
+	return res;
+}
+//8.合并两个有序连表
+ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) 
+{
+	ListNode* dummy = new ListNode(-1),*p=dummy;
+	ListNode* p1 = list1, * p2 = list2;
+	while (p1 && p2)
+	{
+		if (p1->val > p2->val)
+		{
+			p->next = p2;
+			p2 = p2->next;
+		}
+		else
+		{
+			p->next = p1;
+			p1 = p1->next;
+		}
+		p = p->next;
+	}
+	if (p1) p->next = p1;
+	if (p2) p->next = p2;
+	return dummy->next;
+}
+
+//9.生成特殊数字的最少操作(能被25整除的字符串)(leetcode2844).
+//贪心算法
+int minimumOperations(string num)
+{
+	int n = num.length();
+	bool find0 = false, find5 = false;
+	for (int i = n - 1; i >= 0; i--)
+	{
+		if ((num[i] == '0' || num[i] == '5') && find0)
+		{
+			return n - i - 2;
+		}
+		if ((num[i] == '2' || num[i] == '7') && find5)
+		{
+			return n - i - 2;
+		}
+		if (num[i] == '0')
+		{
+			find0 = true;
+			continue;
+		}
+		if (num[i] == '5')
+		{
+			find5 = true;
+			continue;
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		if (num[i] == '0')
+			return n - 1;
+	}
+	return n;
+}
+
+//10.数组中的第k大元素o(n)(leetcode215)
+int findKthLargest(vector<int>& nums, int k) 
+{
+	priority_queue<int>q_max;//优先队列  大根堆（大的元素在最上面）
+	for (const int num : nums)
+	{
+		q_max.push(num);
+	}
+	for (int i = 0; i < k - 1; i++)
+	{
+		q_max.pop();
+	}
+	return q_max.top();
+}
+
+//10.最大子数组和(leetcode53)动态规划
+int maxSubArray(vector<int>& nums) {
+	int n = nums.size();
+	vector<int>dp(n);
+	if (!n) return 0;
+	dp[0] = nums[0];
+	for (size_t i = 1; i < n; i++)
+	{
+		dp[i] = max(nums[i], dp[i - 1] + nums[i]);
+		/*dp[i] 有两种「选择」，要么与前面的相邻子数
+		组连接，形成一个和更大的子数组；要么不与前面
+		的子数组连接，自成一派，自己作为一个子数组。*/
+	}
+	return *max_element(dp.begin(),dp.end());
+}
+//每日一题  682 棒球游戏  栈模拟
+int calPoints(vector<string>& operations) {
+	vector<int>stk;
+	stk.push_back(stoi(operations[0]));
+	for (int i = 1; i < operations.size(); i++)
+	{
+		if (operations[i][0] == 'C')  stk.pop_back();
+		else if (operations[i][0] == 'D')
+			stk.push_back(stk.back() * 2);
+		else if (operations[i][0] == '+')
+		{
+			int first = stk.back();
+			int second = stk[stk.size() - 2];
+			stk.push_back(first + second);
+		}
+		else
+			stk.push_back(stoi(operations[i]));
+	}
+	return accumulate(stk.begin(), stk.end(), 0);
+}
+
+//leetcode 300最长递增子序列  一维动态规划--->另外新建一个dp数组进行处理
+int lengthOfLIS(vector<int>& nums) {
+	vector<int>dp(nums.size(), 1);
+	for (int i = 0; i < nums.size(); i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			if (nums[i] > nums[j])
+			{
+				dp[i] = max(dp[i], dp[j] + 1);
+			}
+		}
+	}
+	return *max_element(dp.begin(), dp.end());
+}
+
+
+int main()
+{
+	vector<int>vec = {4,5,6,7,1,2};
+	int left = 0, right = vec.size() - 1;
+	quickSort(vec, left, right);
+	print_nums(vec);
+	return 0;
+}
+
+
+

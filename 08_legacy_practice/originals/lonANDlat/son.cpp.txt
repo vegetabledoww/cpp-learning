@@ -1,0 +1,67 @@
+#include<iostream>
+#include<cmath>
+#include<math.h>
+#include<vector>
+#include<random>
+using namespace std;
+random_device rd;
+mt19937 gen(rd());
+// 产生高斯噪声
+normal_distribution<double> distribution(0, 1);//均值为0，方差为h[13]
+//东北天坐标：x轴正方向为0，逆时针为正向
+void ANGLE(float ptlon, float ptlat, float pt_h, float ldlon, float ldlat, float ld_h, float& FW, float& FY, float& dong, float& bei, float& tian)
+{
+		float angle = acos(-1) / 180 * ldlat;//角度变弧度
+		dong = (ldlon - ptlon) * 1853.2 * 60 * cos(angle);//东
+		bei = (ldlat - ptlat) * 1853.2 * 60;//*cos(angle_2);//北
+		tian = ld_h - pt_h;//天
+		float targetdistance = sqrt(pow(dong, 2) + pow(bei, 2));//欧式距离,不计算高度
+		FW = atan2(bei, dong) * 180 / acos(-1);//目标方向方位角,-90是因为正北方向为0
+		FW = 90-FW;//变符号是因为东向为正（顺时针）
+		FY = atan2(tian, targetdistance) * 180 / acos(-1);//目标俯仰角
+}
+
+float Distance(float a, float b, float c)
+{
+	return sqrt(pow(a, 2) + pow(b, 2) + pow(c, 2));
+}
+
+vector<double>calcLatAndlon(double basePointLongitude, double basePointLatitude, double azimuth, double distance)
+{
+	double arc = 6371.393 * 1000;//地球半径，单位米
+	azimuth = azimuth * acos(-1) / 180;//角度变为弧度
+	double longlitude = basePointLongitude + distance * sin(azimuth) / (arc * cos(basePointLatitude) * 2 * acos(-1) / 360);
+	double latitude = basePointLatitude + distance * cos(azimuth) / (arc * 2 * acos(-1) / 360);
+	return { longlitude,latitude };
+}
+
+float calcHeight(float baseheight, float dis, float E1)
+{
+	E1 = E1 * acos(-1)/180;
+	return baseheight + dis * sin(E1);
+}
+
+
+int main()
+{
+	float dong, bei, tian, FW, FY, ld_heigh;
+	vector<double>ret;
+	float pt_lon = 111.88;
+	float pt_lat = -25.64;
+	float ld_lon = 121.94;
+	float ld_lat = 35.64;
+	float pth = 0;
+	float ldh = 8000;
+	ANGLE(pt_lon, pt_lat, pth, ld_lon, ld_lat, ldh, FW, FY,dong, bei, tian);
+	//FW += distribution(gen);
+	//FY += distribution(gen);
+	float dis = Distance(dong, bei, tian);
+	dis += 0.1 * dis * distribution(gen);
+	float Level_dis = sqrt(pow(dong, 2) + pow(bei, 2));//水平距离
+	Level_dis += 0.1 * Level_dis * distribution(gen);
+	ld_heigh = calcHeight(pth, dis, FY);
+	ret = calcLatAndlon(pt_lon, pt_lat, FW, Level_dis);
+	for (auto num : ret)
+		cout << num<<endl;
+	cout << ld_heigh;
+}

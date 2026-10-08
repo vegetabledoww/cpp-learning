@@ -1,0 +1,586 @@
+﻿//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+////
+////using namespace std;
+////
+////// 方向数组，用于DFS遍历
+////const int directions[4][2] = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
+////// 墙壁位掩码
+////const int wallMasks[4] = { 8, 4, 2, 1 };
+////
+////void dfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int x, int y, int& size) {
+////    int n = grid.size();
+////    int m = grid[0].size();
+////    int wall = grid[x][y];
+////    visited[x][y] = true;
+////    size++;
+////
+////    for (int i = 0; i < 4; ++i) {
+////        int newX = x + directions[i][0];
+////        int newY = y + directions[i][1];
+////        if (newX >= 0 && newX < n && newY >= 0 && newY < m && !visited[newX][newY] && !(wall & wallMasks[i])) {
+////            dfs(grid, visited, newX, newY, size);
+////        }
+////    }
+////}
+////
+////vector<int> findRoomSizes(vector<vector<int>>& grid) {
+////    int n = grid.size();
+////    int m = grid[0].size();
+////    vector<vector<bool>> visited(n, vector<bool>(m, false));
+////    vector<int> roomSizes;
+////
+////    for (int i = 0; i < n; ++i) {
+////        for (int j = 0; j < m; ++j) {
+////            if (!visited[i][j]) {
+////                int size = 0;
+////                dfs(grid, visited, i, j, size);
+////                roomSizes.push_back(size);
+////            }
+////        }
+////    }
+////
+////    sort(roomSizes.rbegin(), roomSizes.rend());
+////    return roomSizes;
+////}
+////
+////int main() {
+////    // 示例输入
+////    int n, m,temp;
+////    cin >> n >> m;
+////    vector<vector<int>>grid(n,vector<int>(m));
+////    for (int i = 0; i < n; i++)
+////    {
+////        for (int j = 0; j < m; j++)
+////        {
+////            cin>>temp;
+////            grid[i][j] = temp;
+////        }
+////    }
+////    // 计算房间大小
+////    vector<int> roomSizes = findRoomSizes(grid);
+////
+////    // 输出结果
+////    for (int size : roomSizes) {
+////        cout << size << " ";
+////    }
+////    cout << endl;
+////
+//////    return 0;
+//////}
+////
+////
+////#include <iostream>
+////#include <vector>
+////#include <string>
+////
+////std::string fillArray(const std::string& str, int N, int M) {
+////    int len = str.length();
+////    std::string result;
+////    for (int i = 0; i < M; ++i) {
+////        result.append(str);
+////    }
+////    // 如果字符串总长度超过数组大小，只取前 N 个字符
+////    if (result.length() > N) {
+////        result = result.substr(0, N);
+////    }
+////    return result;
+////}
+////
+////int main() {
+////    int N, M;
+////    std::cout << "请输入数组的大小 N 和循环写入的次数 M: ";
+////    std::cin >> N >> M;
+////
+////    std::string str = "HelloWorld";
+////    std::string arrayContent = fillArray(str, N, M);
+////
+////    std::cout << "数组存储内容: ";
+////    for (char c : arrayContent) {
+////        std::cout << c;
+////    }
+////    std::cout << std::endl;
+////
+////    return 0;
+//
+////int main() {
+////    int a, b, c;
+////    cin >> a >> b >> c;
+////
+////    // 对三根木棍的长度进行排序，确保 c 是最长的木棍
+////    int sticks[3] = { a, b, c };
+////    sort(sticks, sticks + 3);
+////
+////    // 检查是否能构成三角形
+////    while (sticks[2] >= sticks[1] + sticks[0]) {
+////        // 如果不能构成三角形，将最长的木棍长度减1
+////        // 直到能够构成三角形为止
+////        sticks[2]--;
+////    }
+////
+////    // 计算并输出最大周长
+////    int maxPerimeter = sticks[0] + sticks[1] + sticks[2];
+////    cout << maxPerimeter << endl;
+////
+////    return 0;
+////}
+//
+////void fun(char str[100])
+////{
+////	cout << sizeof(str) << endl;
+////}
+////
+////void main()
+////{
+////	char str[] = "AccoTEST";
+////	char* psz = str;
+////	double val = 7;
+////
+////	fun(str);
+////	cout << sizeof(str) << endl;
+////	cout << sizeof(psz) << endl;
+////	cout << sizeof(val) << endl;
+////}
+//
+//
+////#include <iostream>
+////#include <vector>
+////#include <unordered_map>
+////#include <algorithm>
+////
+////using namespace std;
+////
+////int main() {
+////    int T;
+////    cin >> T;
+////
+////    vector<vector<int>> results;
+////    vector<int> resultSizes;
+////
+////    for (int t = 0; t < T; ++t) {
+////        int n, l, r;
+////        cin >> n >> l >> r;
+////
+////        vector<int> nums(n);
+////        unordered_map<int, int> countMap;
+////
+////        for (int i = 0; i < n; ++i) {
+////            cin >> nums[i];
+////            countMap[nums[i]]++;
+////        }
+////
+////        vector<int> result;
+////
+////        for (int i = 0; i < n; ++i) {
+////            if (countMap[nums[i]] < l || countMap[nums[i]] > r) {
+////                result.push_back(nums[i]);
+////            }
+////        }
+////
+////        resultSizes.push_back(result.size());
+////        results.push_back(result);
+////    }
+////
+////    for (int t = 0; t < T; ++t) {
+////        cout << resultSizes[t] << endl;
+////        for (int num : results[t]) {
+////            cout << num << " ";
+////        }
+////        cout << endl;
+////    }
+////
+////    return 0;
+////}
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//
+//int calculateMinSum(const std::vector<int>& originalSequence) {
+//    int n = originalSequence.size();
+//    std::vector<int> sequence = originalSequence;
+//    int minSum = INT_MAX;
+//    do {
+//        int sum = 0;
+//        int minVal = sequence[0];
+//        int maxVal = sequence[0];
+//        for (int i = 0; i < n; ++i) {
+//            minVal = std::min(minVal, sequence[i]);
+//            maxVal = std::max(maxVal, sequence[i]);
+//            sum += maxVal - minVal;
+//        }
+//        minSum = std::min(minSum, sum);
+//    } while (std::next_permutation(sequence.begin(), sequence.end()));
+//    return minSum;
+//}
+//
+////int main() {
+////    int n;
+////    std::cin >> n;
+////    std::vector<int> b(n);
+////    for (int i = 0; i < n; ++i) {
+////        std::cin >> b[i];
+////    }
+////    int result = calculateMinSum(b);
+////    std::cout << result << std::endl;
+////    return 0;
+////}
+//
+//#include <iostream>
+//#include <vector>
+//using namespace std;
+//
+//// 翻转操作，x, y为当前位置，n, m为矩阵的行数和列数
+//void flip(vector<vector<int>>& matrix, int x, int y, int n, int m) {
+//    matrix[x][y] = 1 - matrix[x][y]; // 翻转当前位置
+//    if (x > 0) matrix[x - 1][y] = 1 - matrix[x - 1][y]; // 翻转上方
+//    if (x < n - 1) matrix[x + 1][y] = 1 - matrix[x + 1][y]; // 翻转下方
+//    if (y > 0) matrix[x][y - 1] = 1 - matrix[x][y - 1]; // 翻转左方
+//    if (y < m - 1) matrix[x][y + 1] = 1 - matrix[x][y + 1]; // 翻转右方
+//}
+//
+//// 检查矩阵是否全为0
+//bool isAllZeros(const vector<vector<int>>& matrix, int n, int m) {
+//    for (int i = 0; i < n; ++i) {
+//        for (int j = 0; j < m; ++j) {
+//            if (matrix[i][j] == 1) {
+//                return false;
+//            }
+//        }
+//    }
+//    return true;
+//}
+//
+//// 计算最少操作次数
+//int minOperations(vector<vector<int>>& matrix, int n, int m) {
+//    int count = 0;
+//    bool changed;
+//    do {
+//        changed = false;
+//        for (int i = 0; i < n; ++i) {
+//            for (int j = 0; j < m; ++j) {
+//                if (matrix[i][j] == 1) {
+//                    flip(matrix, i, j, n, m);
+//                    count++;
+//                    changed = true;
+//                }
+//            }
+//        }
+//    } while (changed && !isAllZeros(matrix, n, m));
+//    return isAllZeros(matrix, n, m) ? count : -1;
+//}
+//
+////int main() {
+////    int T;
+////    cin >> T;
+////    while (T--) {
+////        int n, m;
+////        cin >> n >> m;
+////        vector<vector<int>> matrix(n, vector<int>(m));
+////        for (int i = 0; i < n; ++i) {
+////            for (int j = 0; j < m; ++j) {
+////                cin >> matrix[i][j];
+////            }
+////        }
+////        cout << minOperations(matrix, n, m) << endl;
+////    }
+////    return 0;
+////}
+//
+//#include<queue>
+//using namespace std;
+//
+//// Hopcroft-Karp 算法实现
+//class HopcroftKarp {
+//public:
+//    int n, m;
+//    vector<vector<int>> adj;
+//    vector<int> pair_u, pair_v, dist;
+//
+//    HopcroftKarp(int size_u, int size_v) {
+//        n = size_u;
+//        m = size_v;
+//        adj.assign(n + 1, vector<int>());
+//    }
+//
+//    void add_edge(int u, int v) {
+//        adj[u].push_back(v);
+//    }
+//
+//    bool bfs() {
+//        queue<int> q;
+//        dist.assign(n + 1, -1);
+//        for (int u = 1; u <= n; u++) {
+//            if (pair_u[u] == 0) {
+//                dist[u] = 0;
+//                q.push(u);
+//            }
+//        }
+//        bool found_augment = false;
+//        while (!q.empty()) {
+//            int u = q.front(); q.pop();
+//            for (auto& v : adj[u]) {
+//                if (pair_v[v] == 0) {
+//                    found_augment = true;
+//                }
+//                else if (dist[pair_v[v]] == -1) {
+//                    dist[pair_v[v]] = dist[u] + 1;
+//                    q.push(pair_v[v]);
+//                }
+//            }
+//        }
+//        return found_augment;
+//    }
+//
+//    bool dfs(int u) {
+//        for (auto& v : adj[u]) {
+//            if (pair_v[v] == 0 || (dist[pair_v[v]] == dist[u] + 1 && dfs(pair_v[v]))) {
+//                pair_u[u] = v;
+//                pair_v[v] = u;
+//                return true;
+//            }
+//        }
+//        dist[u] = -1;
+//        return false;
+//    }
+//
+//    int max_matching() {
+//        pair_u.assign(n + 1, 0);
+//        pair_v.assign(m + 1, 0);
+//        dist.assign(n + 1, -1);
+//        int matching = 0;
+//        while (bfs()) {
+//            for (int u = 1; u <= n; u++) {
+//                if (pair_u[u] == 0) {
+//                    if (dfs(u)) {
+//                        matching++;
+//                    }
+//                }
+//            }
+//        }
+//        return matching;
+//    }
+//};
+//
+//int main() {
+//    ios::sync_with_stdio(false);
+//    cin.tie(0);
+//    int n, d;
+//    cin >> n >> d;
+//    vector<pair<int, int>> positions(n);
+//    for (int i = 0; i < n; i++) cin >> positions[i].first >> positions[i].second;
+//
+//    // 构建图的邻接表
+//    // 首先，需要确定图是否是二分图，并进行正确的二分划分
+//    // 使用 BFS 进行二分划分
+//    vector<int> color(n, -1); // -1: 未着色, 0 或 1: 两个不同的集合
+//    bool is_bipartite = true;
+//    // 邻接矩阵
+//    vector<vector<int>> adj_matrix(n, vector<int>());
+//    for (int i = 0; i < n; i++) {
+//        for (int j = i + 1; j < n; j++) {
+//            int dist_xy = abs(positions[i].first - positions[j].first) + abs(positions[i].second - positions[j].second);
+//            if (dist_xy <= d) {
+//                adj_matrix[i].push_back(j);
+//                adj_matrix[j].push_back(i);
+//            }
+//        }
+//    }
+//
+//    // 二分图划分
+//    for (int i = 0; i < n && is_bipartite; i++) {
+//        if (color[i] == -1) {
+//            queue<int> q;
+//            q.push(i);
+//            color[i] = 0;
+//            while (!q.empty() && is_bipartite) {
+//                int u = q.front(); q.pop();
+//                for (auto& v : adj_matrix[u]) {
+//                    if (color[v] == -1) {
+//                        color[v] = color[u] ^ 1;
+//                        q.push(v);
+//                    }
+//                    else if (color[v] == color[u]) {
+//                        is_bipartite = false;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    if (!is_bipartite) {
+//        // 如果图不是二分图，无法使用Hopcroft-Karp
+//        // 这里可以使用2-近似算法
+//        // 或者根据具体情况采取其他措施
+//        // 但由于问题可能保证图是二分图，我们暂时假设它是二分图
+//        // 如果不确定，输出提示
+//        cout << "图不是二分图，无法使用Hopcroft-Karp算法求解。需要其他方法。" << endl;
+//        return 0;
+//    }
+//
+//    // 根据颜色划分左右集合
+//    int left_size = 0, right_size = 0;
+//    for (int i = 0; i < n; i++) {
+//        if (color[i] == 0) left_size++;
+//        else right_size++;
+//    }
+//
+//    // 创建映射：原节点编号 -> 左右集合编号
+//    // Hopcroft-Karp需要节点编号从1开始
+//    vector<int> left_nodes, right_nodes;
+//    for (int i = 0; i < n; i++) {
+//        if (color[i] == 0) left_nodes.push_back(i);
+//        else right_nodes.push_back(i);
+//    }
+//
+//    // 创建Hopcroft-Karp实例
+//    HopcroftKarp hk(left_size, right_size);
+//
+//    // 添加边
+//    for (int u = 0; u < n; u++) {
+//        for (auto& v : adj_matrix[u]) {
+//            if (color[u] == 0) {
+//                // 左集合节点编号从1到left_size
+//                // 右集合节点编号从1 to right_size
+//                int left_id = distance(left_nodes.begin(), find(left_nodes.begin(), left_nodes.end(), u));
+//                int right_id = distance(right_nodes.begin(), find(right_nodes.begin(), right_nodes.end(), v));
+//                hk.add_edge(left_id + 1, right_id + 1);
+//            }
+//        }
+//    }
+//
+//    // 计算最大匹配
+//    int max_match = hk.max_matching();
+//
+//    // 根据 König 定理，最小顶点覆盖等于最大匹配
+//    cout << max_match;
+//}
+
+#include <vector>
+#include <cmath>
+#include <iostream>
+
+struct Point {
+    double x;
+    double y;
+    double z;
+};
+
+struct Cluster {
+    Point center;
+    std::vector<Point> points;
+};
+
+/**
+ * 计算两个点之间的距离
+ *
+ * @param p1 第一个点
+ * @param p2 第二个点
+ * @return 两点之间的距离
+ */
+double Distance(const Point& p1, const Point& p2) {
+    return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) + pow(p1.z - p2.z, 2));
+}
+
+/**
+ * 更新簇中心的位置
+ *
+ * @param points 属于该簇的点集合
+ * @param cluster 要更新的簇
+ * @return 簇内所有点到簇中心的总距离
+ */
+double UpdateClusterCenter(const std::vector<Point>& points, Cluster& cluster) {
+    double sum_x = 0.0, sum_y = 0.0, sum_z = 0.0;
+    for (const auto& point : points) {
+        sum_x += point.x;
+        sum_y += point.y;
+        sum_z += point.z;
+    }
+    cluster.center.x = sum_x / points.size();// 均值
+    cluster.center.y = sum_y / points.size();
+    cluster.center.z = sum_z / points.size();
+    double total_distance = 0.0;
+    for (const auto& point : points) {
+        total_distance += Distance(point, cluster.center);
+    }
+    return total_distance;
+}
+
+/**
+ * 执行 K 均值聚类算法
+ *
+ * @param data 数据点集合
+ * @param k 簇的数量
+ * @param clusters 存储簇的容器
+ */
+void KMeans(const std::vector<Point>& data, int k, std::vector<Cluster>& clusters) {
+    // 检查输入的合法性
+    if (data.empty() || k <= 0) {
+        std::cerr << "错误，必须输入簇数量！" << std::endl;
+        return;
+    }
+    // 初始化 k 个随机簇中心
+    std::vector<Point> initial_cluster_centers;
+    for (int i = 0; i < k; ++i) {
+        initial_cluster_centers.push_back(data[i]);
+    }
+    // 初始化随机簇
+    for (int i = 0; i < k; ++i) {
+        Cluster cluster;
+        cluster.points.clear();
+        cluster.center = initial_cluster_centers[i];
+        clusters.push_back(cluster);
+    }
+
+    // 计算距离
+    for (const auto& point : data) {
+        double min_distance = std::numeric_limits<double>::max();
+        int cluster_index = 0;
+        for (int i = 0; i < k; ++i) {
+            double distance = Distance(point, clusters[i].center);
+            if (distance < min_distance) {
+                min_distance = distance;
+                cluster_index = i;
+            }
+        }
+        clusters[cluster_index].points.push_back(point);
+    }
+
+    // 更新簇心
+    double total_distance = 0.0;
+    do {
+        total_distance = 0.0;
+        for (auto& cluster : clusters) {
+            total_distance += UpdateClusterCenter(cluster.points, cluster);
+            cluster.points.clear(); // Reset point assignments
+        }
+        // 更新点到簇心的距离
+        for (const auto& point : data) {
+            double min_distance = std::numeric_limits<double>::max();
+            int cluster_index = 0;
+            for (int i = 0; i < k; ++i) {
+                double distance = Distance(point, clusters[i].center);
+                if (distance < min_distance) {
+                    min_distance = distance;
+                    cluster_index = i;
+                }
+            }
+            clusters[cluster_index].points.push_back(point);
+        }
+    } while (total_distance > 20); // Convergence criteria
+}
+
+int main() {
+    std::vector<Point> data = { {1.0, 2.0,0.9}, {1.5, 1.8,0.9}, {5.0, 8.0,6.0}, {8.0, 8.0,6.0}, {1.5, 1.8,6.0}, {5.0, 8.0,6.0}, {7.0, 7.0,6.0} };//测试案例
+    std::vector<Cluster> clusters;
+    int k = 2; // Number of clusters
+    KMeans(data, k, clusters);
+    for (const auto& cluster : clusters) {
+        std::cout << "簇心: (" << cluster.center.x << ", " << cluster.center.y << ", " << cluster.center.z << ")" << std::endl;
+        for (const auto& point : cluster.points) {
+            std::cout << "(" << point.x << ", " << point.y << ", " << point.z << ")" << std::endl;
+        }
+    }
+    return 0;
+}

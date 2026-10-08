@@ -1,0 +1,930 @@
+﻿#include <unordered_map>
+#include <vector>
+#include <cstring>
+#include <random>
+#include <numeric>
+#include <queue>
+#include <iostream>
+#include <string>
+#include<algorithm>
+#include<stdint.h>
+#include<unordered_set>
+#include<set>
+#include<stack>
+#include<stdint.h>
+using namespace std;
+
+//29项目以个位数字的大小进行排序
+void lambda_test(void)
+{
+    int a[] = { 19, 2, 33, 4,50 };
+    sort(a, a + size(a), [&](int x, int y) -> bool { return x % 10 < y % 10; });//匿名函数
+    for (int& Num : a)
+    {
+        cout << Num<<endl;
+    }
+}
+
+void print_nums(vector<int>ans)
+{
+    for (auto num : ans)
+    {
+        cout << num<<" ";
+    }
+}
+//29项目：枚举类型
+enum age :int8_t   //字符类型
+{
+    a=5,
+    b=10,
+    c,
+    d,
+    e,
+    f=0
+};
+
+char getAgeString(age ageValue)
+{
+    switch (ageValue)
+    {
+    case a: return 'a';
+    case b: return 'b';
+    case c: return 'c';
+    case d: return 'd';
+    case e: return 'e';
+    case f: return 'f';
+    //default: return "unknown';
+    }
+}
+
+ struct Numbers
+{
+    string a;//字符的赋值要加单引号
+    bool b;//性别
+    age z;//年龄
+};
+//以结构体的某一项作为标准进行排序
+
+
+//int main()
+//{
+//    Numbers classmate[] = { {"小明",0,b},{"小红",1,f} ,{"小华",1,e},{"小芳",1,a}};
+//    int size = (sizeof(classmate) / sizeof(classmate[0]));
+//    sort(classmate, classmate + size, [](Numbers a, Numbers b) -> bool { return a.z < b.z; });//匿名函数，以年龄大小排序(从小到大)
+//    lambda_test();
+//     for (Numbers demo : classmate)
+//     {
+//         cout << demo.a << " " << demo.b << " " << getAgeString(demo.z) << endl;
+//     }
+//    return 0;
+//}
+
+// 最小堆
+//int main()
+//{
+//    priority_queue<int, vector<int>, greater<int>> pq2; //默认的构造方法
+//    //cout << "start..." << endl;
+//    for (int i = 0; i < 10; i++) {
+//        int t = rand() % 100;
+//        cout << t <<"  ";
+//        pq2.push(t);
+//    }
+//    cout << endl;
+//
+//    while (!pq2.empty())
+//    {
+//        cout << pq2.top()<<"  ";//<< ends;
+//        pq2.pop();
+//    }
+//    cout << endl;
+//}
+//最大堆：优先队列
+//int main()
+//{
+//    srand(time(NULL));
+//    priority_queue<int> pq1; // 默认是最大堆...
+//    std::cout << "start..." << endl;
+//    for (int i = 0; i < 10; i++) {
+//        int t = rand() % 100;
+//        cout << t << "  ";
+//        pq1.push(t);
+//    }
+//    std::cout << endl;
+//    while (!pq1.empty())
+//    {
+//        cout << pq1.top() << "  ";
+//        pq1.pop();
+//    }
+//    cout << endl;
+//}
+//438找到字符串中所有字母异位词（滑动窗口）
+vector<int> findAnagrams(string s, string p) {
+    unordered_map<int, int>need, window;
+    for (char c : p) need[c]++;
+    int left = 0, right = 0;
+    int valid = 0;
+    vector<int>res;
+    while (right < s.size())
+    {
+        char c = s[right];
+        right++;
+        if (need.count(c))
+        {
+            window[c]++;
+            if (window[c] == need[c])
+                valid++;
+        }
+        while (right - left >= p.size())
+        {
+            if (need.size() == valid)
+            {
+                res.push_back(left);
+            }
+            char d = s[left];
+            left++;
+            if (need.count(d))
+            {
+                if (window[d] == need[d])
+                {
+                    valid--;
+                }
+                window[d]--;
+            }
+        }
+    }
+    return res;
+}
+//239.滑动窗口最大值
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+    int n = nums.size();
+    priority_queue<pair<int, int>> q;//数值大的在最上面
+    for (int i = 0; i < k; ++i) {
+        q.emplace(nums[i], i);
+    }
+    vector<int> ans = { q.top().first };
+    for (int i = k; i < n; ++i) {
+        q.emplace(nums[i], i);
+        while (q.top().second <= i - k) {
+            q.pop();
+        }
+        ans.push_back(q.top().first);
+    }
+    return ans;
+}
+//二叉树的层序遍历
+
+ struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+};
+vector<vector<int>> levelOrder(TreeNode* root) {
+    vector<vector<int>>res;
+    if (!root) return res;
+    queue<TreeNode*>q;
+    q.push(root);
+    while (!q.empty())
+    {
+        int curr = q.size();
+        res.push_back(vector<int>());
+        for (int i = 1; i <= curr; i++)
+        {
+            auto node = q.front();
+            q.pop();
+            res.back().push_back(node->val);
+            if (node->left)q.push(node->left);
+            if (node->right)q.push(node->right);
+        }
+    }
+    return res;
+}
+////字符串分割为整数
+//int main()
+//{
+//    string str = "529200";//字符串大小超过10就会抛出异常（stoi函数问题）
+//    string new_str;
+//    vector<int>temp;
+//    for(int i=1;i<str.length();i++)
+//    {
+//        new_str = str.substr(0, i);
+//        temp.push_back(stoi(new_str));
+//    }
+//    temp.push_back(stoi(str));
+//    for(auto num : temp)
+//        cout << num<<" ";
+//    return 0;
+//}
+
+//回溯
+class Solution {
+    // 每个数字到字母的映射
+    vector<string> mapping = { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+    vector<string> res;
+
+public:
+    vector<string> letterCombinations(string digits) {
+        if (digits.empty()) {
+            return res;
+        }
+        // 从 digits[0] 开始进行回溯
+        backtrack(digits, 0, "");
+        return res;
+    }
+
+    // 回溯算法主函数
+    void backtrack(const string& digits, int start, string cur) {
+        if (cur.size() == digits.size()) {
+            // 到达回溯树底部
+            res.push_back(cur);
+            return;
+        }
+        // 回溯算法框架
+        for (int i = start; i < digits.size(); i++) {
+            int digit = digits[i] - 48;
+            for (char c : mapping[digit]) {
+                // 做选择
+                cur.push_back(c);
+                // 递归下一层回溯树
+                backtrack(digits, i + 1, cur);
+                // 撤销选择
+                cur.pop_back();
+            }
+        }
+    }
+};
+
+//299.题猜数字游戏
+string getHint(string secret, string guess) {
+    int bulls = 0, cows = 0;
+    set<int>s1;//对输入的数值自动按照从小到大的顺序排序
+    string ans;
+    for (auto c : secret)
+    {
+        s1.insert(c - 48);
+    }
+    for (auto c : guess)
+    {
+        if (s1.count(c-48)) cows++;//数字和位置都正确，母牛数量加1
+    }
+    for (int i = 0; i < secret.length(); i++)
+    {
+        if (secret[i] == guess[i])
+        {
+            cows--;
+            bulls++;
+        }
+    }
+    ans = to_string(bulls) + "A" + to_string(cows) + "B";
+    return ans;
+}
+
+//int main()
+//{
+//    string mystr = "4513";
+//    string yourstr = "5413";
+//    string ans=getHint(mystr, yourstr);
+//}
+
+
+//2129.题对标题首字母大写
+    string capitalizeTitle(string title) {
+        int n = title.size();
+        int l = 0, r = 0;   // 单词左右边界（左闭右开）
+        while (r < n) {
+            while (r < n && title[r] != ' ') {
+                ++r;
+            }
+            // 对于每个单词按要求处理
+            if (r - l > 2) {//对首字母单词大写
+                title[l] = toupper(title[l]);
+                l++;
+
+            }
+            while (l < r) {//对非首字母的单词小写
+                title[l] = tolower(title[l]);
+                l++;
+            }
+            l = ++r;//下一个单词操作
+        }
+        return title;
+    }
+
+    //int main() {
+    //    string str1 = "capiTalIze tHe titLe";
+    //    string str2;
+    //    str2 = capitalizeTitle(str1);
+    //    for (auto c : str2)  cout << c;
+    //    return 0;
+    //}
+
+    // === File: n_queens.cpp ===
+    /* 回溯算法： n 皇后 */
+    void backtrack(int row, int n, vector<vector<string>>& state, vector<vector<vector<string>>>& res,vector<bool>& cols,
+        vector<bool>& diags1, vector<bool>& diags2) {
+        // 当放置完所有行时，记录解
+        if (row == n) {
+            res.push_back(state);
+            return;
+        }
+        // 遍历所有列
+        for (int col = 0; col < n; col++) {
+            // 计算该格子对应的主对角线和次对角线
+            int diag1 = row - col + n - 1;
+            int diag2 = row + col;
+            // 剪枝：不允许该格子所在列、主对角线、次对角线上存在皇后
+            if (!cols[col] && !diags1[diag1] && !diags2[diag2]) {
+                // 尝试：将皇后放置在该格子
+                state[row][col] = "Q";
+                cols[col] = diags1[diag1] = diags2[diag2] = true;
+                // 放置下一行
+                backtrack(row + 1, n, state, res, cols, diags1, diags2);
+                // 回退：将该格子恢复为空位
+                state[row][col] = "#";
+                cols[col] = diags1[diag1] = diags2[diag2] = false;
+            }
+        }
+    }
+    /* 求解 n 皇后 */
+    vector<vector<vector<string>>> nQueens(int n) {
+        // 初始化 n*n 大小的棋盘，其中 'Q' 代表皇后， '#' 代表空位
+        vector<vector<string>> state(n, vector<string>(n, "#"));
+        vector<bool> cols(n, false); // 记录列是否有皇后
+        vector<bool> diags1(2 * n - 1, false); // 记录主对角线上是否有皇后
+        vector<bool> diags2(2 * n - 1, false); // 记录次对角线上是否有皇后
+        vector<vector<vector<string>>> res;
+        backtrack(0, n, state, res, cols, diags1, diags2);
+        return res;
+    }
+
+    //完全背包问题
+    int unboundedKnapsackDP(vector<int>& wgt, vector<int>& val, int cap) {
+    int n = wgt.size();
+    // 初始化 dp 表
+    vector<vector<int>> dp(n + 1, vector<int>(cap + 1, 0));
+    // 状态转移
+    for (int i = 1; i <= n; i++) {
+        for (int c = 1; c <= cap; c++) {
+            if (wgt[i - 1] > c) {
+                // 若超过背包容量，则不选物品 i
+                dp[i][c] = dp[i - 1][c];
+            }
+            else {
+                // 不选和选物品 i 这两种方案的较大值
+                dp[i][c] = max(dp[i - 1][c], dp[i][c - wgt[i - 1]] + val[i - 1]);
+            }
+        }
+    }
+    return dp[n][cap];
+}
+  /*  int main()
+    {
+        vector<int>weight = { 10,20,30,40,50 };
+        vector<int>value = { 50,120,150,210,240 };
+        int capicity = 50;
+        cout << unboundedKnapsackDP(weight, value, capicity);
+        return 0;
+    }*/
+
+
+    //29所项目，寻找下标，返回值为  批号，相同的两个批号的下标
+    unordered_map<int, pair<int, int>> findCommonElements(vector<int>& arr1, vector<int>& arr2) {
+        unordered_map<int, pair<int, int>> indexMap;
+        unordered_map<int, int> elementIndexMap;
+
+        // Store elements of the first array with their indices
+        for (int i = 0; i < arr1.size(); ++i) {
+            elementIndexMap[arr1[i]] = i;
+        }
+
+        // Check for common elements in the second array
+        for (int j = 0; j < arr2.size(); ++j) {
+            if (elementIndexMap.find(arr2[j]) != elementIndexMap.end()) {
+                indexMap[arr2[j]] = { elementIndexMap[arr2[j]], j };
+            }
+        }
+
+        return indexMap;
+    }
+
+  /*  int main() {
+        std::vector<int> array1 = { 1, 2, 3, 4, 5,0};
+        std::vector<int> array2 = { 3, 4, 5, 6, 7,0};
+
+        std::unordered_map<int, std::pair<int, int>> commonElements = findCommonElements(array1, array2);
+
+        if (commonElements.empty()) {
+            std::cout << "No common elements." << std::endl;
+        }
+        else {
+            for (const auto& elem : commonElements) {
+                std::cout << "Element " << elem.first << " found at index " << elem.second.first
+                    << " in array1 and index " << elem.second.second << " in array2." << std::endl;
+            }
+        }
+
+        return 0;
+    }*/
+
+    //贪心算法
+    /*给定 背包。每个物品只能选择一次， 𝑛 个物品，第 𝑖 个物品的重量为 但可以选择物品的一部分，价值根据选择的重量比例计算 𝑤𝑔𝑡[𝑖 − 1]、价值为 𝑣𝑎𝑙[𝑖 − 1] ，和一个容量为 𝑐𝑎𝑝 ，问 的
+        在限定背包容量下背包中物品的最大价值。*/
+    class Item
+    {
+    public:
+        int w;//物品重量
+        int v;//物品价值
+        Item(int w, int v) :w(w), v(v) {
+        }
+    };
+    double fractionalKnapsack(vector<int>& wgt, vector<int>& val, int cap)
+    {
+        vector<Item>items;
+        for (size_t i = 0; i < wgt.size(); i++)
+        {
+            items.push_back(Item(wgt[i], val[i]));
+        }
+        //按照单位价值从高到低进行排序
+        sort(items.begin(), items.end(), [=](Item& a, Item& b) ->bool
+            {
+                return (double)a.v / a.w > (double)b.v / b.w;
+            });
+        //循环贪心选择
+        double res = 0;
+        for (auto& item : items)
+        {
+            if (item.w <= cap)
+                //如果剩余背包容量充足，则将当前物品都放入背包中
+            {
+                res += item.v;
+                cap -= item.w;
+            }
+            else
+            {
+                //如果剩余背包容量不足
+                res += (double)item.v / item.w * cap;
+                break;
+            }
+        }
+        return res;
+    }
+ /*   void test()
+    {
+        vector<int>value = { 10,20,30,40 };
+        vector<int>weight = { 20,20,80,80 };
+        int cap = 150;
+        double ans = 0;
+        ans = fractionalKnapsack(weight, value, cap);
+        cout << ans;
+    }*/
+
+    //最大容量问题：贪心算法（局部最优解即为全局最优解）
+    int maxCapacity(vector<int>& ht)
+    {
+        int i = 0, j = ht.size()-1, res = 0;//也可以为认定其为双指针法
+        while (i<j)
+        {
+            //更新最大容量
+            int cap = min(ht[i], ht[j]) * (j - 1);
+            res = max(res, cap);
+            if (ht[i] < ht[j])//左侧板子较低
+            {
+                i++;
+            }
+            else 
+            {
+                j--;
+            }
+        }
+        return res;
+    }
+    //int main()
+    //{ 
+    //    vector<int>test_num = { 1,5,2,4,3,5,6,1 };
+    //    cout<<maxCapacity(test_num);
+    //}
+
+    //179.最大数
+    string largestNumber(vector<int>& nums) {
+        sort(nums.begin(), nums.end(), [](const int& x, const int& y) {
+            return to_string(x) + to_string(y) > to_string(y) + to_string(x);
+            });
+        string ret;
+        for (int& x : nums) {
+            if (nums[0] == 0)//如果第一个数值为0，则直接跳出循环，赋0
+            {
+                ret = '0';
+                break;
+            }
+            ret += to_string(x);
+        }
+        return ret;
+    }
+    //84.住行图中的最大矩形(单调栈)
+    int largestRectangleArea(vector<int>& heights) {
+        int ans = 0;
+        vector<int>st;
+        //两端插入0
+        heights.insert(heights.begin(), 0);
+        heights.push_back(0);
+        for (size_t i = 0; i < heights.size(); i++)
+        {
+            while (!st.empty() && heights[st.back()] > heights[i])
+            {
+                int cur = st.back();
+                st.pop_back();
+                int left = st.back() + 1;
+                int right = i - 1;
+                ans = max(ans, (right - left + 1) * heights[cur]);
+            }
+            st.push_back(i);
+        }
+        return ans;
+    }
+  /*  int main()
+    {
+        vector<int>test_num = { 2,1,5,6,2,3};
+        int max_nums = largestRectangleArea(test_num);
+        cout << max_nums;
+    }*/
+    //20.
+    class Solution1 {
+    public:
+        bool isValid(string s) {
+            int n = s.size();
+            if (n % 2 == 1) {
+                return false;
+            }
+
+            unordered_map<char, char> pairs = {
+                {')', '('},
+                {']', '['},
+                {'}', '{'}
+            };
+            stack<char> stk;
+            for (char ch : s) {
+                if (pairs.count(ch)) {
+                    if (stk.empty() || stk.top() != pairs[ch]) {
+                        return false;
+                    }
+                    stk.pop();
+                }
+                else {
+                    stk.push(ch);
+                }
+            }
+            return stk.empty();
+        }
+    };
+
+   /* int main()
+    {
+        Solution1 solve;
+        string str = "[{}()]";
+        bool flag = solve.isValid(str);
+        cout << flag;
+    }*/
+    //2109
+    int minimumRefill(vector<int>& plants, int capacityA, int capacityB) {
+        int n = plants.size();
+        int num1 = 0, num2 = 0;
+        int Alice_cur = capacityA, Bob_cur = capacityB;
+        for (int i = 0; i < n / 2; i++)
+        {
+            if (Alice_cur < plants[i])
+            {
+                num1++;
+                Alice_cur = capacityA;
+                i--;
+            }
+            else
+            {
+                Alice_cur -= plants[i];
+            }
+        }
+
+        for (int i = n - 1; i > n / 2; i--)
+        {
+            if (Bob_cur < plants[i])
+            {
+                num2++;
+                Bob_cur = capacityB;
+                i++;
+            }
+            else
+            {
+                Bob_cur -= plants[i];
+            }
+        }
+        if (!(n % 2))//长度为偶数
+            return num1 + num2;
+        else
+        {
+            if (plants[n / 2] > Bob_cur && plants[n / 2] > Alice_cur)
+            {
+                return num1 + num2 + 1;
+            }
+            else
+            {
+                return num1 + num2;
+            }
+        }
+    }
+    //打家劫舍1
+    int rob1(vector<int>& nums) {
+        if (nums.empty()) {
+            return 0;
+        }
+        int size = nums.size();
+        if (size == 1) 
+        {
+            return nums[0];
+        }
+        vector<int> dp(size, 0);//赋初值这样更快更省
+        dp[0] = nums[0];
+        dp[1] = max(nums[0], nums[1]);
+        for (int i = 2; i < size; i++) {
+            dp[i] = max(dp[i - 2] + nums[i], dp[i - 1]);
+        }
+        return dp[size - 1];
+    }
+
+    //打家劫舍2：首尾相连形
+    int robRange(vector<int>& nums, int start, int end) {
+        int first = nums[start], second = max(nums[start], nums[start + 1]);
+        for (int i = start + 2; i <= end; i++) {
+            int temp = second;
+            second = max(first + nums[i], second);
+            first = temp;
+        }
+        return second;
+    }
+
+    int rob2(vector<int>& nums) {
+        int length = nums.size();
+        if (length == 1) {
+            return nums[0];
+        }
+        else if (length == 2) {
+            return max(nums[0], nums[1]);
+        }
+        return max(robRange(nums, 0, length - 2), robRange(nums, 1, length - 1));
+    }
+
+
+
+    //27 移除元素
+    int removeElement(vector<int>& nums, int val) {
+        vector<int>res;
+        for (int& num : nums)
+        {
+            if (num != val)
+            {
+                res.push_back(num);
+            }
+        }
+        nums.resize(res.size());
+        for (int i = 0; i < res.size(); i++)
+        {
+            nums[i] = res[i];
+        }
+        return res.size();
+    }
+
+
+
+    //1535.找出数组游戏的赢家
+    int getWinner(vector<int>& arr, int k)
+    {
+        int prev = max(arr[0], arr[1]);
+        if (k == 1)  return prev;
+        int consecutive = 1;
+        int maxNum = prev;
+        int length = arr.size();
+        for (int i = 2; i < length; i++)
+        {
+            int curr = arr[i];
+            if (prev > curr)
+            {
+                consecutive++;
+                if (consecutive == k)
+                    return prev;
+            }
+            else
+            {
+                prev = curr;
+                consecutive = 1;
+            }
+            maxNum = max(maxNum, curr);
+        }
+        return maxNum;
+    }
+
+vector<int> mostCompetitive(vector<int>& nums, int k) {
+    vector<int>res;
+    int n = nums.size();
+    for (int i = 0; i < n; i++)
+    {
+        while (!res.empty() && n - i + res.size() > k && res.back() > nums[i])
+        {
+            res.pop_back();
+        }
+        res.push_back(nums[i]);
+    }
+    res.resize(k);
+    return res;
+}
+//2981
+int maximumLength(string s) {
+    vector<int>groups[26];//二维数组
+    int cnt = 0, n = s.length();
+    for (int i = 0; i < n; i++)
+    {
+        cnt++;
+        if (i + 1 == n || s[i] != s[i + 1])
+        {
+            groups[s[i] - 'a'].push_back(cnt);
+            cnt = 0;
+        }
+    }
+
+    int ans = 0;
+    for (auto& a : groups)
+    {
+        if (a.empty())  continue;
+        sort(a.rbegin(), a.rend());
+        a.push_back(0);
+        a.push_back(0);
+        ans = max({ ans,a[0] - 2,min(a[0] - 1,a[1]),a[2] });
+    }
+    return ans ? ans : -1;
+}
+//2965
+vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
+    int n = grid.size(), a = 0, b = 0;
+    vector<int>ans(n * n, 0);
+    for (int i = 0; i < grid.size(); i++)
+    {
+        for (int j = 0; j < grid[0].size(); j++)
+        {
+            ans[grid[i][j]-1]++;
+        }
+    }
+    for (int i = 0; i < n * n; i++)
+    {
+        if (ans[i] == 2)  a = i;
+        if (ans[i] == 0)  b = i;
+        else continue;
+    }
+    return { a+1,b+1 };
+}
+
+int longestValidParentheses(string s) {
+    int maxans = 0;
+    stack<int>stk;
+    stk.push(-1);
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (s[i] == '(')
+        {
+            stk.push(i);
+        }
+        else
+        {
+            stk.pop();
+            if (stk.empty())
+            {
+                stk.push(i);
+            }
+            else
+            {
+                maxans = max(maxans, i - stk.top());
+            }
+        }
+    }
+    return maxans;
+}
+//1103
+vector<int> distributeCandies(int candies, int num_people) {
+    int i = 0, num = 0;
+    vector<int>ans(num_people);
+    for (int i = 0; i <= num_people; i++)
+    {
+        i == num_people ? 0 : i;
+        num++;
+        ans[i] += num;
+        if (candies > 0)
+        {
+            candies -= num;
+        }
+        else
+        {
+            ans[i] = candies + num - 1;
+            break;
+        }
+    }
+    return ans;
+}
+//518.零钱兑换二
+int change(int amount, vector<int>& coins) {
+    vector<int>dp(amount + 1);
+    dp[0] = 1;
+    //双重for循环，每一层循环代表只有这一个硬币所构成的次数，累计即得到总的次数
+    for (int& coin : coins)
+    {
+        for (int i = coin; i <= amount; i++)
+        {
+            dp[i] += dp[i - coin];
+        }
+    }
+    return dp.back();
+}
+
+//经典字符串匹配算法KMP算法
+// 计算 next 数组（最长公共前后缀表）
+void getNext(string pattern, vector<int>& next) {
+    int m = pattern.length();
+    next.resize(m);
+    int i = 0, j = -1;
+    next[0] = -1;
+    while (i < m - 1) {
+        if (j == -1 || pattern[i] == pattern[j]) {
+            i++;
+            j++;
+            next[i] = j;
+        }
+        else {
+            j = next[j];
+        }
+    }
+}
+
+// KMP 匹配函数    文本串      模式串
+int kmpSearch(string text, string pattern) {
+    int n = text.length(), m = pattern.length();
+    vector<int> next(m);
+    getNext(pattern, next);
+    int i = 0, j = 0;
+    while (i < n && j < m) {
+        if (j == -1 || text[i] == pattern[j]) {
+            i++;
+            j++;
+        }
+        else {
+            j = next[j];
+        }
+    }
+    if (j == m) {
+        return i - j;
+    }
+    return -1;
+}
+
+int main() {
+    string text = "BBCABCDABABCDABCDABDE";
+    string pattern = "ABCDABD";
+    int index = kmpSearch(text, pattern);
+    if (index != -1) {
+        cout << "Pattern found at index: " << index << endl;
+    }
+    else {
+        cout << "Pattern not found" << endl;
+    }
+    return 0;
+}
+
+//测试代码
+void test()
+{
+    vector<int>test_arr = { 1,2,5 };
+    int ans;
+    ans = change(5, test_arr);
+    cout << ans;
+}
+    //print_nums(distributeCandies(7, 4));
+    //vector<vector<int>>test_num = { {1,2,3},
+    //                               {4,5,6},
+    //                               {7,8,7} };
+    //vector<int>ans;
+    //string str = "())((())";
+    //int ans=0;
+    //ans = longestValidParentheses(str);
+    //cout << ans;
+    //print_nums(ans);
+    /*vector<int>nums = { 3,5,2,6};
+    vector<int>res;*/
+    //static int num = 0;
+    //num++;
+//}
+    //int main()
+    //{
+    //    test();
+    //    return 0;
+    //}
+
+
+
+
+   

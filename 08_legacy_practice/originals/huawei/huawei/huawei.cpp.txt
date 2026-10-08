@@ -1,0 +1,536 @@
+﻿// huawei.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+//
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+//
+//void sortColour(vector<int>& nums)
+//{
+//    int red = 0, white = 0, blue = nums.size()-1;
+//    while (white < blue)
+//    {
+//    if (nums[white] == 0)
+//    {
+//        swap(nums[red],nums[white]);
+//        ++red;
+//        ++white;
+//    }
+//    else if (nums[white] == 1)
+//    {
+//        ++white;
+//    }
+//    else
+//    {
+//        swap(nums[white],nums[blue]);
+//        blue--;
+//    }
+//}
+//}
+//int main()
+//{
+//    vector<int>nums1 = { 0,0,1,2,2,1,0,2,1};
+//    sortColour(nums1);
+//    for (int num : nums1)
+//    {
+//        cout << num << " ";
+//    }
+//    return 0;
+//}
+
+
+//题目：
+//有一些不同长度绳子，给定一个期望切割出来条数，求至少达到期望条数能切出来的最大子绳子长度。
+//注意：绳子不能拼接。
+//下面例子中len表示长度，target表示期望的个数。
+//
+//例子1：
+//	输入：len = { 802, 743, 457, 539 }，target = 11；
+//	输出：200；（201的时候没法切出11个绳子）
+//
+//例子2：
+//	输入：len = { 1, 1, 1 }，target = 4;
+//	输出：0
+
+bool canCut(const vector<int>& lens, int target, int len)
+{
+	int count = 0;
+	for (int l : lens)
+	{
+		count += l / len;//切成的子绳子数量
+	}
+	return count >= target;
+}
+
+int maxLength(vector<int>& lens, int target)
+{
+	if (lens.size() == 0) return 0;
+	int left = 1;
+	int right = *max_element(lens.begin(), lens.end());
+	int result = 0;
+	//二分查找的过程
+	while (left <= right)
+	{
+		int mid = left + (right - left) / 2;
+		if (canCut(lens, target, mid))
+		{
+			result = mid;
+			left = mid + 1;
+		}
+		else
+		{
+			right = mid - 1;
+		}
+	}
+	return result;
+}
+//int main()
+//{
+//	int target1 = 11, target2 = 4;
+//	vector<int>len1 = { 802,743,457,539 };
+//	vector<int>len2 = { 1,1,1};
+//	cout << maxLength(len1,target1)<<endl;
+//	cout << maxLength(len2,target2) << endl;
+//	return 0;
+//}
+
+//int minimumCost(vector<int>& cost) {
+//	int n = cost.size();
+//	int sum = 0;
+//	sort(cost.rbegin(), cost.rend());
+//	if (n < 3) {
+//		if (n % 3 == 1)
+//			sum += cost[n - 1];
+//		if (n % 3 == 2) {
+//			sum += cost[n - 1];
+//			sum += cost[n - 2];
+//		}
+//	}
+//	else {
+//		for (int i = 0; i < n; i += 3) {
+//			sum += cost[i];
+//			sum += cost[i + 1];
+//		}
+//		if (n % 3 == 1)
+//			sum += cost[n - 1];
+//		if (n % 3 == 2) {
+//			sum += cost[n - 1];
+//			sum += cost[n - 2];
+//		}
+//	}
+//	return sum;
+//}
+//
+//int main()
+//{
+//	vector<int>test = {3,3,3,1};
+//	cout<<minimumCost(test);
+//}
+
+
+//#include <iostream>
+//using namespace std;
+//
+//// 划分函数
+//int partition(int arr[], int low, int high) {
+//    int pivot = arr[high];
+//    int i = low - 1;
+//    for (int j = low; j < high; j++) {
+//        if (arr[j] <= pivot) {
+//            i++;
+//            swap(arr[i], arr[j]);
+//        }
+//    }
+//    swap(arr[i + 1], arr[high]);
+//    return i + 1;
+//}
+//
+//// 快速排序函数
+//void quickSort(int arr[], int low, int high) {
+//    if (low < high) {
+//        int pivotIndex = partition(arr, low, high);
+//        quickSort(arr, low, pivotIndex - 1);
+//        quickSort(arr, pivotIndex + 1, high);
+//    }
+//}
+//
+//// 打印数组函数
+//void printArray(int arr[], int size) {
+//    for (int i = 0; i < size; i++) {
+//        cout << arr[i] << " ";
+//    }
+//    cout << endl;
+//}
+//
+////int main() {
+////    int arr[] = { 10, 7, 8, 9, 1, 5 };
+////    int n = sizeof(arr) / sizeof(arr[0]);
+////    cout << "原始数组：";
+////    printArray(arr, n);
+////    quickSort(arr, 0, n - 1);
+////    cout << "排序后的数组：";
+////    printArray(arr, n);
+////    return 0;
+////}
+//
+//
+//using namespace std;
+//
+//// 定义方向数组，用于DFS遍历
+//const int directions[4][2] = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
+//const int wallMap[16][4] = {
+//    {0, 0, 0, 0}, // 0000
+//    {0, 0, 0, 1}, // 0001
+//    {0, 0, 1, 0}, // 0010
+//    {0, 0, 1, 1}, // 0011
+//    {0, 1, 0, 0}, // 0100
+//    {0, 1, 0, 1}, // 0101
+//    {0, 1, 1, 0}, // 0110
+//    {0, 1, 1, 1}, // 0111
+//    {1, 0, 0, 0}, // 1000
+//    {1, 0, 0, 1}, // 1001
+//    {1, 0, 1, 0}, // 1010
+//    {1, 0, 1, 1}, // 1011
+//    {1, 1, 0, 0}, // 1100
+//    {1, 1, 0, 1}, // 1101
+//    {1, 1, 1, 0}, // 1110
+//    {1, 1, 1, 1}  // 1111
+//};
+//
+//void dfs(vector<vector<int>>& grid, int x, int y, vector<vector<bool>>& visited) {
+//    int n = grid.size();
+//    int m = grid[0].size();
+//    visited[x][y] = true;
+//    int size = 1;
+//
+//    for (int i = 0; i < 4; ++i) {
+//        int newX = x + directions[i][0];
+//        int newY = y + directions[i][1];
+//        if (newX >= 0 && newX < n && newY >= 0 && newY < m && !visited[newX][newY] && !wallMap[grid[newX][newY]][i]) {
+//            size += dfs(grid, newX, newY, visited);
+//        }
+//    }
+//
+//    return size;
+//}
+//
+//vector<int> findRoomSizes(vector<vector<int>>& grid) {
+//    int n = grid.size();
+//    int m = grid[0].size();
+//    vector<vector<bool>> visited(n, vector<bool>(m, false));
+//    vector<int> roomSizes;
+//
+//    for (int i = 0; i < n; ++i) {
+//        for (int j = 0; j < m; ++j) {
+//            if (!visited[i][j]) {
+//                int size = dfs(grid, i, j, visited);
+//                roomSizes.push_back(size);
+//            }
+//        }
+//    }
+//
+//    sort(roomSizes.rbegin(), roomSizes.rend());
+//    return roomSizes;
+//}
+//
+//int main() {
+//    // 示例输入
+//    vector<vector<int>> grid = {
+//        {9, 14},
+//        {12, 13},
+//        {5, 15},
+//        {6},
+//        {5, 9},
+//        {9, 14, 9}
+//    };
+//
+//    // 计算房间大小
+//    vector<int> roomSizes = findRoomSizes(grid);
+//
+//    // 输出结果
+//    for (int size : roomSizes) {
+//        cout << size << " ";
+//    }
+//    cout << endl;
+//
+//    return 0;
+//}
+
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//#include <cmath>
+//
+//using namespace std;
+//
+//// 计算两点之间的距离
+//int distanceBetweenPoints(int x1, int y1, int x2, int y2) {
+//    return abs(x1 - x2) + abs(y1 - y2);
+//}
+//
+//int main() {
+//    int n, k;
+//    cin >> n >> k;
+//
+//    vector<int> xPositions(n);
+//    vector<int> yPositions(n);
+//
+//    // 读取人员的位置坐标
+//    for (int i = 0; i < n; ++i) {
+//        cin >> xPositions[i];
+//    }
+//    for (int i = 0; i < n; ++i) {
+//        cin >> yPositions[i];
+//    }
+//
+//    int isolatedCount = 0;
+//
+//    // 遍历每个人，检查是否需要被隔离
+//    for (int i = 0; i < n; ++i) {
+//        bool shouldIsolate = false;
+//        for (int j = 0; j < n; ++j) {
+//            if (i == j) continue;
+//            int dist = distanceBetweenPoints(xPositions[i], yPositions[i], xPositions[j], yPositions[j]);
+//            if (dist <= k) {
+//                shouldIsolate = true;
+//                break;
+//            }
+//        }
+//        if (shouldIsolate) {
+//            ++isolatedCount;
+//        }
+//    }
+//
+//    cout << isolatedCount << endl;
+//
+//    return 0;
+//}
+
+
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//using namespace std;
+//
+//// 函数用于找到最长的单调递增子区间
+//int findLongest(vector<int>& heights) {
+//    int n = heights.size();
+//    int ans = 0;
+//    // 不修改山的高度的情况
+//    int l = 0, r = 0;
+//    while (r < n) {
+//        if (r > 0 && heights[r] <= heights[r - 1]) {
+//            l = r;
+//        }
+//        ans = max(ans, r - l + 1);
+//        r++;
+//    }
+//    // 尝试修改每一座山的高度的情况
+//    for (int i = 0; i < n; i++) {
+//        int original = heights[i];
+//        // 尝试将当前山的高度修改为0到100000之间的每一个值
+//        for (int newHeight = 0; newHeight <= 100000; newHeight++) {
+//            heights[i] = newHeight;
+//            l = 0, r = 0;
+//            while (r < n) {
+//                if (r > 0 && heights[r] <= heights[r - 1]) {
+//                    l = r;
+//                }
+//                ans = max(ans, r - l + 1);
+//                r++;
+//            }
+//        }
+//        heights[i] = original;
+//    }
+//    return ans;
+//}
+//
+//int main() {
+//    int T;
+//    cin >> T;
+//    vector<vector<int>> allHeights(T);
+//    vector<int> nValues(T);
+//    // 读取所有输入数据
+//    for (int i = 0; i < T; i++) {
+//        cin >> nValues[i];
+//        allHeights[i].resize(nValues[i]);
+//        for (int j = 0; j < nValues[i]; j++) {
+//            cin >> allHeights[i][j];
+//        }
+//    }
+//    // 计算并输出结果
+//    for (int i = 0; i < T; i++) {
+//        cout << findLongest(allHeights[i]) << endl;
+//    }
+//    return 0;
+//}
+
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//using namespace std;
+//
+//// 函数用于找到最长的单调递增子区间
+//int findLongest(vector<int>& heights) {
+//    int n = heights.size();
+//    int ans = 0;
+//    // 不修改山的高度的情况
+//    int l = 0, r = 0;
+//    while (r < n) {
+//        if (r > 0 && heights[r] <= heights[r - 1]) {
+//            l = r;
+//        }
+//        ans = max(ans, r - l + 1);
+//        r++;
+//    }
+//    // 预处理左边最大值
+//    vector<int> leftMax(n);
+//    leftMax[0] = heights[0];
+//    for (int i = 1; i < n; i++) {
+//        leftMax[i] = max(leftMax[i - 1], heights[i]);
+//    }
+//    // 预处理右边最小值
+//    vector<int> rightMin(n);
+//    rightMin[n - 1] = heights[n - 1];
+//    for (int i = n - 2; i >= 0; i--) {
+//        rightMin[i] = min(rightMin[i + 1], heights[i]);
+//    }
+//    // 尝试修改每一座山的高度的情况
+//    for (int i = 0; i < n; i++) {
+//        // 尝试修改为左边最大值加1
+//        if (i > 0 && leftMax[i - 1] < heights[i]) {
+//            int newHeight = leftMax[i - 1] + 1;
+//            int newL = i - 1, newR = i;
+//            while (newR < n && (newR == i || heights[newR] > newHeight)) {
+//                newHeight = max(newHeight, heights[newR]);
+//                ans = max(ans, newR - newL + 1);
+//                newR++;
+//            }
+//        }
+//        // 尝试修改为右边最小值减1
+//        if (i < n - 1 && rightMin[i + 1] > heights[i]) {
+//            int newHeight = rightMin[i + 1] - 1;
+//            int newL = i, newR = i;
+//            while (newL >= 0 && (newL == i || heights[newL] < newHeight)) {
+//                newHeight = min(newHeight, heights[newL]);
+//                ans = max(ans, newR - newL + 1);
+//                newL--;
+//            }
+//        }
+//    }
+//    return ans;
+//}
+//
+//int main() {
+//    int T;
+//    cin >> T;
+//    vector<vector<int>> allHeights(T);
+//    vector<int> nValues(T);
+//    // 读取所有输入数据
+//    for (int i = 0; i < T; i++) {
+//        cin >> nValues[i];
+//        allHeights[i].resize(nValues[i]);
+//        for (int j = 0; j < nValues[i]; j++) {
+//            cin >> allHeights[i][j];
+//        }
+//    }
+//    // 计算并输出结果
+//    for (int i = 0; i < T; i++) {
+//        cout << findLongest(allHeights[i])+1 << endl;
+//    }
+//    return 0;
+//}
+
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//#include <cmath>
+//
+//using namespace std;
+//
+//// 计算两点之间的曼哈顿距离
+//int manhattanDistance(int x1, int y1, int x2, int y2) {
+//    return abs(x1 - x2) + abs(y1 - y2);
+//}
+//
+//int main() {
+//    int n, k;
+//    cin >> n >> k;
+//
+//    vector<pair<int, int>> people(n);
+//
+//    for (int i = 0; i < n; ++i) {
+//        cin >> people[i].first >> people[i].second;
+//    }
+//
+//    // 对人员位置进行排序
+//    sort(people.begin(), people.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+//        return a.first < b.first || (a.first == b.first && a.second < b.second);
+//        });
+//
+//    int maxRiskCount = 0;
+//    int left = 0; // 滑动窗口的左边界
+//
+//    for (int right = 0; right < n; ++right) {
+//        // 确保窗口内所有人与高风险人员的距离不超过k
+//        while (manhattanDistance(people[right].first, people[right].second,
+//            people[left].first, people[left].second) > k) {
+//            left++; // 缩小窗口
+//        }
+//        // 更新最大高风险人员数量
+//        maxRiskCount = max(maxRiskCount, right - left + 1);
+//    }
+//
+//    cout << maxRiskCount << endl;
+//
+//    return 0;
+//}
+
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+int main() {
+    int n, k;
+    std::cin >> n >> k;
+
+    std::vector<int> x(n), y(n);
+
+    // Read x coordinates
+    for (int i = 0; i < n; ++i) {
+        std::cin >> x[i];
+    }
+
+    // Read y coordinates
+    for (int i = 0; i < n; ++i) {
+        std::cin >> y[i];
+    }
+
+    int max_count = 0;
+
+    // For each person, count the number of people within distance <= k
+    for (int i = 0; i < n; ++i) {
+        int count = 0;
+
+        for (int j = 0; j < n; ++j) {
+            int distance = std::abs(x[i] - x[j]) + std::abs(y[i] - y[j]);
+            if (distance <= k) {
+                ++count;
+            }
+        }
+
+        if (count > max_count) {
+            max_count = count;
+        }
+    }
+
+    std::cout << max_count << std::endl;
+
+    return 0;
+}
